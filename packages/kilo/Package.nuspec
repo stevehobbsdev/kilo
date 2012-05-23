@@ -1,8 +1,8 @@
-<?xml version="1.0"?>
-<package >
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package>
   <metadata>
-    <id>Simplicode.Framework</id>
-    <version>1.2.1</version>
+    <id>Kilo</id>
+    <version>1.2.1.0</version>
     <authors>Steve Hobbs</authors>
     <owners>Steve Hobbs</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>

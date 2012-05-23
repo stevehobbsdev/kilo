@@ -1,0 +1,61 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0" DefaultTargets="default">
+	
+	<PropertyGroup>
+		<BaseDir>$(MSBuildProjectDirectory)\..\..\src\</BaseDir>
+		<Configuration Condition="'$(Configuration)'==''">Release</Configuration>
+		
+		<BuildDir>$(MSBuildProjectDirectory)</BuildDir>
+		<PackageDir>$(BuildDir)\..\$(ProjectName)</PackageDir>
+
+		
+		<SolutionFile>$(BaseDir)Kilo.sln</SolutionFile>
+		<ProjectName></ProjectName>
+		<PackageLib>$(PackageDir)\lib\net40</PackageLib>
+		<BinaryName>$(ProjectName).dll</BinaryName>
+		<BinaryPath>$(BaseDir)$(ProjectName)\bin\$(Configuration)\$(BinaryName)</BinaryPath>
+
+		<MSBuildExtensions>$(MSBuildProjectDirectory)\MSBuild.Community.Tasks.dll</MSBuildExtensions>
+
+		<NugetPath Condition="'$(NugetPath)'==''">$(BuildDir)\nuget.exe</NugetPath>
+
+		<PushPackage Condition="'$(PushPackage)'==''">no</PushPackage>
+
+	</PropertyGroup>
+
+	<UsingTask AssemblyFile="$(MSBuildExtensions)" TaskName="MSBuild.Community.Tasks.XmlUpdate" />
+
+	<Target Name="default" DependsOnTargets="Compile; Package" />
+
+	<Target Name="Compile">
+		<MSBuild Projects="$(SolutionFile)" Properties="Configuration=$(Configuration)" />
+	</Target>
+
+	<Target Name="Package">
+		
+		<Message Text="BaseDir: $(BaseDir)" />
+		<Message Text="KiloPackageDir: $(KiloPackageDir)" />
+		<Message Text="SolutionFile: $(SolutionFile)" />
+		<Message Text="ProjectName: $(ProjectName)" />
+		<Message Text="PackageDir: $(PackageDir)" />
+		<Message Text="PackageLib: $(PackageLib)" />
+		<Message Text="BinaryPath: $(BinaryPath)" />
+
+		<Copy SourceFiles="$(BinaryPath)" DestinationFolder="$(PackageLib)" />
+
+		<GetAssemblyIdentity AssemblyFiles="$(PackageLib)\$(BinaryName)">
+			<Output TaskParameter="Assemblies" ItemName="AsmInfo" />
+		</GetAssemblyIdentity>
+
+		<Message Text="Processing: $(BinaryName) %(AsmInfo.Version)" />
+
+		<XmlUpdate 
+			XmlFilename="$(PackageDir)\Package.nuspec"
+			XPath="/package/metadata/version"
+			Value="%(AsmInfo.Version)" />
+
+		<!-- Perform package -->
+		<Exec WorkingDirectory="$(PackageDir)" Command="$(NugetPath) pack package.nuspec" />
+
+	</Target>
+
+</Project>
