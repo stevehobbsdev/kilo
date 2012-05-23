@@ -52,21 +52,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Collections.cs" />
+    <Compile Include="Collections\Collections.cs" />
+    <Compile Include="Collections\Dictionary.cs" />
+    <Compile Include="Collections\ForEach.cs" />
+    <Compile Include="Collections\GetValueAsType.cs" />
+    <Compile Include="Collections\GlueContents.cs" />
     <Compile Include="Crypto\Hash.cs" />
-    <Compile Include="Dictionary.cs">
-      <DependentUpon>Collections.cs</DependentUpon>
-    </Compile>
     <Compile Include="Expressions\ExpressionParser.cs" />
-    <Compile Include="ForEach.cs">
-      <DependentUpon>Collections.cs</DependentUpon>
-    </Compile>
-    <Compile Include="GetValueAsType.cs">
-      <DependentUpon>Collections.cs</DependentUpon>
-    </Compile>
-    <Compile Include="GlueContents.cs">
-      <DependentUpon>Collections.cs</DependentUpon>
-    </Compile>
     <Compile Include="Configuration\IgnoreSettingAttribute.cs" />
     <Compile Include="Configuration\ISettingRepository.cs" />
     <Compile Include="Configuration\Providers\ConfigFileProvider.cs" />
@@ -84,16 +76,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringUtil.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-
   <Target Name="BeforeBuild">
   </Target>
-
   <Target Name="AfterBuild">
   </Target>
-
 </Project>
