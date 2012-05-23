@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Simplicode.Framework.Data</id>
+    <version>0.7.4</version>
+    <authors>Steve Hobbs</authors>
+    <owners>Steve Hobbs</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Collection of data repositories and other helpers for EntityFramework and EF Code First</description>
+    <releaseNotes>Added include support for DbContextRepository and EntityRepository.</releaseNotes>
+    <copyright>Copyright (C) Steve Hobbs 2012</copyright>
+    <dependencies>
+      <dependency id="Simplicode.Framework" version="1.2.1" />
+      <dependency id="EntityFramework" version="4.3" />
+    </dependencies>
+  </metadata>
+</package>
