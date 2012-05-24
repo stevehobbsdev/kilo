@@ -80,4 +80,15 @@
 
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 
+  <PropertyGroup>
+    <BuildDependsOn>
+        $(BuildDependsOn);
+        PackageBuild
+    </BuildDependsOn>
+    </PropertyGroup>
+
+    <Target Name="PackageBuild">
+        <MSBuild Projects="$(SolutionDir)\..\packages\packageBuild\packageBuild.csproj" Targets="PackageBuild" Properties="ProjectName=$(ProjectName)" />
+    </Target>
+
 </Project>

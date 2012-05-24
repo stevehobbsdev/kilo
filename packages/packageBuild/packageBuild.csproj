@@ -24,13 +24,13 @@
 
 	<UsingTask AssemblyFile="$(MSBuildExtensions)" TaskName="MSBuild.Community.Tasks.XmlUpdate" />
 
-	<Target Name="default" DependsOnTargets="Compile; Package" />
+	<Target Name="default" DependsOnTargets="Compile; PackageBuild" />
 
 	<Target Name="Compile">
 		<MSBuild Projects="$(SolutionFile)" Properties="Configuration=$(Configuration)" />
 	</Target>
 
-	<Target Name="Package">
+	<Target Name="PackageBuild">
 		
 		<Message Text="BaseDir: $(BaseDir)" />
 		<Message Text="KiloPackageDir: $(KiloPackageDir)" />
