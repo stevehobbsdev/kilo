@@ -60,7 +60,7 @@ namespace Kilo
 
             var pairs = new List<KeyValuePair<T, string>>();
 
-            for (int i = 0; i < names.Length - 1; i++)
+            for (int i = 0; i < names.Length; i++)
             {
                 T value = (T)values.GetValue(i);
                 string description = GetDescription(value);
