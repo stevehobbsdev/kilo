@@ -75,6 +75,7 @@
     <Compile Include="Configuration\SettingsAttribute.cs" />
     <Compile Include="Configuration\SettingsManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reflection\DictionaryBuilder.cs" />
     <Compile Include="StringUtil.cs" />
   </ItemGroup>
   <ItemGroup />
