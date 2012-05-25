@@ -15,3 +15,6 @@ msbuild packageBuild.csproj /property:ProjectName=Kilo,Configuration=Release,Pus
 
 REM Kilo.Data
 msbuild packageBuild.csproj /property:ProjectName=Kilo.Data,Configuration=Release,PushPackage=%push% /p:Platform="Any CPU"
+
+REM Kilo.Mvc
+msbuild packageBuild.csproj /property:ProjectName=Kilo.Mvc,Configuration=Release,PushPackage=%push% /p:Platform="Any CPU"
