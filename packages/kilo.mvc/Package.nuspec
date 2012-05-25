@@ -10,6 +10,7 @@
     <releaseNotes>Added expression parser for obtaining property paths from lambda expressions.</releaseNotes>
     <copyright>Copyright (C) Steve Hobbs 2012</copyright>
     <dependencies>
+      <dependency id="Kilo" version="1.2.1" />
     </dependencies>
   </metadata>
 </package>
