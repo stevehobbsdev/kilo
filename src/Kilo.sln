@@ -10,6 +10,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{76AC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kilo.Data", "Kilo.Data\Kilo.Data.csproj", "{F27F2FFB-2672-4FE0-978F-348F14E31FEF}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9F693068-A2E7-4340-923F-7560B0DF3B33}"
+	ProjectSection(SolutionItems) = preProject
+		..\.gitattributes = ..\.gitattributes
+		..\.gitignore = ..\.gitignore
+		..\README.markdown = ..\README.markdown
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kilo.Mvc", "Kilo.Mvc\Kilo.Mvc.csproj", "{357970E4-709A-42E2-9CB3-D97E4E454243}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +39,16 @@ Global
 		{2C07B22A-6BCA-43F1-8B0A-E7EB8A84DD17}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{2C07B22A-6BCA-43F1-8B0A-E7EB8A84DD17}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{2C07B22A-6BCA-43F1-8B0A-E7EB8A84DD17}.Release|x86.ActiveCfg = Release|Any CPU
+		{357970E4-709A-42E2-9CB3-D97E4E454243}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{357970E4-709A-42E2-9CB3-D97E4E454243}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{357970E4-709A-42E2-9CB3-D97E4E454243}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{357970E4-709A-42E2-9CB3-D97E4E454243}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{357970E4-709A-42E2-9CB3-D97E4E454243}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{357970E4-709A-42E2-9CB3-D97E4E454243}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{357970E4-709A-42E2-9CB3-D97E4E454243}.Release|Any CPU.Build.0 = Release|Any CPU
+		{357970E4-709A-42E2-9CB3-D97E4E454243}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{357970E4-709A-42E2-9CB3-D97E4E454243}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{357970E4-709A-42E2-9CB3-D97E4E454243}.Release|x86.ActiveCfg = Release|Any CPU
 		{572B7E6E-215C-472F-A199-6FAD2A08DE62}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{572B7E6E-215C-472F-A199-6FAD2A08DE62}.Debug|Any CPU.Build.0 = Debug|x86
 		{572B7E6E-215C-472F-A199-6FAD2A08DE62}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
