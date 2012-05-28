@@ -56,13 +56,11 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Import Project="$(SolutionDir)\..\packageBuild\kilo.packages.targets" />
   <PropertyGroup>
     <BuildDependsOn>
-        $(BuildDependsOn);
-        PackageBuild
+      $(BuildDependsOn);
+      PackageBuild
     </BuildDependsOn>
   </PropertyGroup>
-  <Target Name="PackageBuild">
-    <MSBuild Projects="$(SolutionDir)\..\packages\packageBuild\packageBuild.csproj" Targets="PackageBuild" Properties="ProjectName=$(ProjectName)" />
-  </Target>
 </Project>
