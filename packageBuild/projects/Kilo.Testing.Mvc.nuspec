@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package>
   <metadata>
-    <id>Kilo.Testing</id>
+    <id>Kilo.Testing.Mvc</id>
     <version>1.0</version>
     <authors>Steve Hobbs</authors>
     <owners>Steve Hobbs</owners>
@@ -12,6 +12,7 @@
       <group>
         <dependency id="Moq" />
         <dependency id="Kilo.Testing" />
+        <dependency id="aspnetmvc" version="4.0.20710.0" />
       </group>
     </dependencies>
   </metadata>

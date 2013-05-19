@@ -7,7 +7,7 @@ using Moq;
 
 namespace Kilo.Testing.Mvc
 {
-    class ControllerBuilder<T> : TestSubjectBuilder<ControllerBuilder<T>, T>
+    public class ControllerBuilder<T> : TestSubjectBuilder<ControllerBuilder<T>, T>
         where T : Controller
     {
         private UrlHelper _urlHelper;
