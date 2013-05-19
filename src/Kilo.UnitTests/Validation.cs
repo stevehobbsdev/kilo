@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Kilo.Data.Validation;
+using Kilo.ObjectValidation;
 using Kilo.UnitTests.Fakes;
 
 namespace Kilo.UnitTests
