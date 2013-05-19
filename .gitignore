@@ -4,6 +4,9 @@
 *.nupkg
 outputPackages/
 
+packages/*
+!packages/repositories.config
+
 #################
 ## Eclipse
 #################

@@ -4,17 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F27F2FFB-2672-4FE0-978F-348F14E31FEF}</ProjectGuid>
+    <ProjectGuid>{9EE73340-C15D-4693-8507-7C61DFA81763}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Kilo.Data</RootNamespace>
-    <AssemblyName>Kilo.Data</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <RootNamespace>Kilo.Testing</RootNamespace>
+    <AssemblyName>Kilo.Testing</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <BuildPackage>true</BuildPackage>
-    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -34,14 +30,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework">
-      <HintPath>..\packages\EntityFramework.4.3.1\lib\net40\EntityFramework.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data.Entity" />
-    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -49,33 +39,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Caching\CachedRepository.cs" />
-    <Compile Include="Caching\DefaultCacheProvider.cs" />
-    <Compile Include="Caching\ICacheProvider.cs" />
-    <Compile Include="DbContextRepository.cs" />
-    <Compile Include="EntityRepository.cs" />
-    <Compile Include="IRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="State.cs" />
-    <Compile Include="UnitOfWork.cs" />
-    <Compile Include="Validation\DataAnnotationsValidationRunner.cs" />
-    <Compile Include="Validation\IValidationRunner.cs" />
-    <Compile Include="Validation\IViolationContainer.cs" />
-    <Compile Include="Validation\RuleViolation.cs" />
-    <Compile Include="Validation\ValidationException.cs" />
-    <Compile Include="Validation\ValidationUtil.cs" />
-    <Compile Include="Validation\ViolationContainer.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Kilo\Kilo.csproj">
-      <Project>{b1ee4bab-a687-4b4f-b7f7-61f76b0ec38c}</Project>
-      <Name>Kilo</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
   <Import Project="$(SolutionDir)\..\packageBuild\kilo.packages.targets" />
   <PropertyGroup>
     <BuildDependsOn>
@@ -83,5 +56,4 @@
       PackageBuild
     </BuildDependsOn>
   </PropertyGroup>
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
 </Project>
