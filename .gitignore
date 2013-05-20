@@ -3,8 +3,7 @@
 #################
 *.nupkg
 outputPackages/
-src/packages/*
-!src/packages/repositories.config
+src/packages
 
 #################
 ## Eclipse
