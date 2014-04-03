@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="BlobStorageRepository.cs" />
     <Compile Include="CommitContext.cs" />
+    <Compile Include="DevelopmentStorageContext.cs" />
     <Compile Include="DomainMappedRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StorageContext.cs" />
