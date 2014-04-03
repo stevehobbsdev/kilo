@@ -112,19 +112,14 @@ namespace Kilo.Data.EntityFramework
                 entry.State = System.Data.Entity.EntityState.Detached;
             }
         }
-
-        public void SaveChanges()
+        
+        public void Commit()
         {
-            _context.SaveChanges();
+            this._context.SaveChanges();
         }
 
         #region Not applicable 
         public object GetObjectKey(TEntity entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Commit()
         {
             throw new NotImplementedException();
         }
