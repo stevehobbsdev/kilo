@@ -23,18 +23,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kilo.Mvc", "Kilo.Mvc\Kilo.M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kilo.Testing", "Kilo.Testing\Kilo.Testing.csproj", "{9EE73340-C15D-4693-8507-7C61DFA81763}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PackageBuild", "PackageBuild", "{2F4EA0F5-59D4-4C6E-8A5B-A0B4FB1E836D}"
-	ProjectSection(SolutionItems) = preProject
-		..\packageBuild\build vs10.bat = ..\packageBuild\build vs10.bat
-		..\packageBuild\build vs11.bat = ..\packageBuild\build vs11.bat
-		..\packageBuild\projects\Kilo.Data.nuspec = ..\packageBuild\projects\Kilo.Data.nuspec
-		..\packageBuild\projects\Kilo.Mvc.nuspec = ..\packageBuild\projects\Kilo.Mvc.nuspec
-		..\packageBuild\projects\Kilo.nuspec = ..\packageBuild\projects\Kilo.nuspec
-		..\packageBuild\kilo.packages.targets = ..\packageBuild\kilo.packages.targets
-		..\packageBuild\projects\Kilo.Testing.Mvc.nuspec = ..\packageBuild\projects\Kilo.Testing.Mvc.nuspec
-		..\packageBuild\projects\Kilo.Testing.nuspec = ..\packageBuild\projects\Kilo.Testing.nuspec
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kilo.Testing.Mvc", "Kilo.Testing.MVC\Kilo.Testing.Mvc.csproj", "{DF27160C-45D5-484B-B015-C92F8D348710}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{8B033BEB-9EAC-430F-8597-279655666A9B}"
