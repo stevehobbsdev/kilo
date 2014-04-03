@@ -59,7 +59,12 @@
     <Compile Include="State.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Kilo.Data.nuspec" />
     <None Include="packages.config" />
+    <None Include="PostBuildScripts\BuildNewPackage-RanAutomatically.ps1" />
+    <None Include="PostBuildScripts\New-NuGetPackage.ps1" />
+    <None Include="PostBuildScripts\UploadPackage-RunManually.bat" />
+    <None Include="PostBuildScripts\UploadPackage-RunManually.ps1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Kilo\Kilo.csproj">
@@ -67,13 +72,20 @@
       <Name>Kilo</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="PostBuildScripts\NuGet.exe" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\..\packageBuild\kilo.packages.targets" />
-  <PropertyGroup>
-    <BuildDependsOn>
-      $(BuildDependsOn);
-      PackageBuild
-    </BuildDependsOn>
-  </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <PropertyGroup>
+    <PostBuildEvent>REM Create a NuGet package for this project and place the .nupkg file in the project's output directory.
+ECHO Building NuGet package in Post-Build event...
+PowerShell -NoProfile -ExecutionPolicy Bypass -Command "&amp; '$(ProjectDir)PostBuildScripts\BuildNewPackage-RanAutomatically.ps1' -ProjectFilePath '$(ProjectPath)' -OutputDirectory '$(TargetDir)' -Configuration '$(ConfigurationName)' -Platform '$(PlatformName)'"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

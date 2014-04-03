@@ -1,5 +1,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30324.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kilo", "Kilo\Kilo.csproj", "{B1EE4BAB-A687-4B4F-B7F7-61F76B0EC38C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kilo.UnitTests", "Kilo.UnitTests\Kilo.UnitTests.csproj", "{2C07B22A-6BCA-43F1-8B0A-E7EB8A84DD17}"
@@ -20,13 +22,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kilo.Mvc", "Kilo.Mvc\Kilo.Mvc.csproj", "{357970E4-709A-42E2-9CB3-D97E4E454243}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kilo.Testing", "Kilo.Testing\Kilo.Testing.csproj", "{9EE73340-C15D-4693-8507-7C61DFA81763}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{ECB11500-A4B1-48CF-B3AD-E6C1D9F345FE}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PackageBuild", "PackageBuild", "{2F4EA0F5-59D4-4C6E-8A5B-A0B4FB1E836D}"
 	ProjectSection(SolutionItems) = preProject
@@ -129,7 +124,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{572B7E6E-215C-472F-A199-6FAD2A08DE62} = {76ACF9F4-E928-418D-9D31-FA3DF8EEB682}
 		{2C07B22A-6BCA-43F1-8B0A-E7EB8A84DD17} = {76ACF9F4-E928-418D-9D31-FA3DF8EEB682}
+		{572B7E6E-215C-472F-A199-6FAD2A08DE62} = {76ACF9F4-E928-418D-9D31-FA3DF8EEB682}
 	EndGlobalSection
 EndGlobal
