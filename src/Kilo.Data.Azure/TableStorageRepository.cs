@@ -16,7 +16,7 @@ namespace Kilo.Data.Azure
     /// <param name="context">Contextual information about the commit operation</param>
     public delegate void CommitEvent<T>(CommitContext<T> context) where T : class, ITableEntity, new();
 
-    public class TableStorageRepository<T> : IWriteableRepository<T>
+    public class TableStorageRepository<T> : IRepository<T, TableStorageKey>,  IWriteableRepository<T>
         where T : class, ITableEntity, new()
     {
         private UnitOfWorkContainer<T> _uow;
@@ -158,12 +158,21 @@ namespace Kilo.Data.Azure
             this.ResetUnitOfWork();
         }
 
+        public T Single(TableStorageKey key)
+        {
+            IQueryable<T> query = this.Table.CreateQuery<T>()
+                .Where(t => t.PartitionKey == key.PartitionKey)
+                .Where(t => t.RowKey == key.RowKey);
+
+            return query.FirstOrDefault();
+        }
+
         /// <summary>
         /// Gets entities based on a predicate filter.
         /// </summary>
         /// <param name="partitionKey">The partition key to filter on. A filter for partitionKey is automatically included by default.</param>
         /// <param name="predicates">The predicates to include in the filter.</param>
-        public IEnumerable<T> Query(params Expression<Func<T, bool>>[] predicates)
+        public IQueryable<T> Query(params Expression<Func<T, bool>>[] predicates)
         {
             IQueryable<T> query = this.Table.CreateQuery<T>();
 
@@ -172,10 +181,7 @@ namespace Kilo.Data.Azure
                 query = predicates.Aggregate(query, (current, pred) => current.Where(pred));
             }
 
-            foreach (var item in query)
-            {
-                yield return item;
-            }
+            return query;
         }
 
         /// <summary>
@@ -183,7 +189,7 @@ namespace Kilo.Data.Azure
         /// </summary>
         /// <param name="resolver">The resolver to use when performing the query</param>
         /// <param name="predicates">The set of predicates to apply to the query</param>
-        public IEnumerable<T> QueryWithResolver(EntityResolver<T> resolver, params Expression<Func<T, bool>>[] predicates)
+        public IQueryable<T> QueryWithResolver(EntityResolver<T> resolver, params Expression<Func<T, bool>>[] predicates)
         {
             if (resolver == null)
             {
@@ -197,23 +203,7 @@ namespace Kilo.Data.Azure
                 query = predicates.Aggregate(query, (current, pred) => current.Where(pred));
             }
 
-            foreach (var item in query)
-            {
-                yield return item;
-            }
-        }
-
-        /// <summary>
-        /// Gets the entity.
-        /// </summary>
-        /// <param name="specifications">The specifications.</param>
-        public T GetEntity(string partitionKey, string rowKey)
-        {
-            IQueryable<T> query = this.Table.CreateQuery<T>()
-                .Where(t => t.PartitionKey == partitionKey)
-                .Where(t => t.RowKey == rowKey);
-                
-            return query.FirstOrDefault();
+            return query;
         }
         
         /// <summary>

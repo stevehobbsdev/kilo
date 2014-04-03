@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.WindowsAzure.Storage.Table;
 
 namespace Kilo.Data.Azure
 {
-    public class DomainMappedRepository<TDomain, TTable> : IWriteableRepository<TDomain>
+    public class DomainMappedRepository<TTable, TDomain> : IRepository<TTable, TDomain, TableStorageKey>, IWriteableRepository<TDomain>
         where TTable : TableEntity, new()
     {
         private UnitOfWorkContainer<TDomain> _uow;
@@ -105,14 +106,14 @@ namespace Kilo.Data.Azure
         /// </summary>
         /// <param name="partitionKey">The partition key to filter on. A filter for partitionKey is automatically included by default.</param>
         /// <param name="predicates">The predicates to include in the filter.</param>
-        public IEnumerable<TDomain> Query(params Expression<Func<TTable, bool>>[] predicates)
+        public IQueryable<TDomain> Query(params Expression<Func<TTable, bool>>[] predicates)
         {
             var entities = this._repository.Query(predicates);
 
-            foreach (var item in entities)
-            {
-                yield return this.ConvertFromTableEntity(item);
-            }
+            var domainEntities = entities.ToList()
+                .Select(e => this.ConvertFromTableEntity(e));
+
+            return domainEntities.AsQueryable();
         }
 
         /// <summary>
@@ -120,23 +121,23 @@ namespace Kilo.Data.Azure
         /// </summary>
         /// <param name="partitionKey">The partition key to filter on. A filter for partitionKey is automatically included by default.</param>
         /// <param name="predicates">The predicates to include in the filter.</param>
-        public IEnumerable<TDomain> QueryWithResolver(EntityResolver<TTable> resolver, params Expression<Func<TTable, bool>>[] predicates)
+        public IQueryable<TDomain> QueryWithResolver(EntityResolver<TTable> resolver, params Expression<Func<TTable, bool>>[] predicates)
         {
             var entities = this._repository.QueryWithResolver(resolver, predicates);
 
-            foreach (var item in entities)
-            {
-                yield return this.ConvertFromTableEntity(item);
-            }
+            var domainEntities = entities.ToList()
+                .Select(e => this.ConvertFromTableEntity(e));
+
+            return domainEntities.AsQueryable();
         }
 
         /// <summary>
         /// Gets the entity.
         /// </summary>
         /// <param name="specifications">The specifications.</param>
-        public TDomain GetEntity(string partitionKey, string rowKey)
+        public TDomain Single(TableStorageKey key)
         {
-            var entity = this._repository.GetEntity(partitionKey, rowKey);
+            var entity = this._repository.Single(key);
 
             return this.ConvertFromTableEntity(entity);
         }

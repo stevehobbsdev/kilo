@@ -67,6 +67,7 @@
     <Compile Include="DomainMappedRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StorageContext.cs" />
+    <Compile Include="TableStorageKey.cs" />
     <Compile Include="TableStorageRepository.cs" />
     <Compile Include="UnitOfWorkContainer.cs" />
   </ItemGroup>

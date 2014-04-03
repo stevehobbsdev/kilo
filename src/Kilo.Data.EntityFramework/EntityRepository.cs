@@ -8,9 +8,9 @@ using System.Linq;
 using System.Linq.Expressions;
 using Kilo.Expressions;
 
-namespace Kilo.Data
+namespace Kilo.Data.EntityFramework
 {
-	public class EntityRepository<T> : IRepository<T>
+	public class EntityRepository<T, TKey> : IEntityRepository<T, TKey>
 		where T : class, IEntityWithKey
 	{
 		public ObjectContext _context = null;
@@ -43,7 +43,7 @@ namespace Kilo.Data
 		/// Gets a single entity
 		/// </summary>
 		/// <param name="key">The key.</param>
-		public T GetSingle(object key)
+		public T Single(TKey key)
 		{
             EntityKey ekey = new EntityKey(_objectSet.EntitySet.Name, _objectSet.EntitySet.ElementType.KeyMembers.First().Name, key);
 
@@ -67,9 +67,14 @@ namespace Kilo.Data
 			return _objectSet;
 		}
 
-		public IQueryable<T> All(Expression<Func<T, bool>> predicate)
+		public IQueryable<T> Query(params Expression<Func<T, bool>> [] predicates)
 		{
-			var query = _objectSet.Where(predicate);
+            IQueryable<T> query = this._objectSet;
+
+            if(predicates != null)
+            {
+                query = predicates.Aggregate(query, (current, predicate) => current.Where(predicate));
+            }
 
 #if DEBUG
 			Trace.WriteLine("Returing all from data provider, with predicate (" + this._objectSet.EntitySet.Name + "):");
@@ -85,14 +90,11 @@ namespace Kilo.Data
         /// <param name="includes">The include expressions</param>
         public IQueryable<T> AllWithIncludes(params Expression<Func<T, object>>[] includes)
         {
-            ObjectQuery<T> query = _objectSet;
-            var exprParser = new ExpressionParser<T, object>();
+            IQueryable<T> query = _objectSet;
 
-            foreach (var item in includes)
+            if(includes != null)
             {
-                string propertyPath = exprParser.GetPropertyPathFromExpression(item);
-
-                query = query.Include(propertyPath);
+                query = includes.Aggregate(query, (current, include) => current.Include(include));
             }
 
             return query;
@@ -105,14 +107,11 @@ namespace Kilo.Data
         /// <param name="includes">The include expressions</param>
         public IQueryable<T> AllWithIncludes(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
         {
-            ObjectQuery<T> query = _objectSet.Where(predicate) as ObjectQuery<T>;
-            var exprParser = new ExpressionParser<T, object>();
+            IQueryable<T> query = _objectSet.Where(predicate);
 
-            foreach (var item in includes)
+            if(includes != null)
             {
-                string propertyPath = exprParser.GetPropertyPathFromExpression(item);
-
-                query = query.Include(propertyPath);
+                query = includes.Aggregate(query, (current, include) => current.Include(include));
             }
 
             return query;

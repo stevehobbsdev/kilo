@@ -6,7 +6,7 @@ using Kilo.Expressions;
 
 namespace Kilo.Data.EntityFramework
 {
-    public class DbContextRepository<TEntity, TContext> : IRepository<TEntity>
+    public class DbContextRepository<TEntity, TContext, TKey> : IEntityRepository<TEntity, TKey>
         where TEntity : class
         where TContext : DbContext
     {
@@ -25,30 +25,35 @@ namespace Kilo.Data.EntityFramework
             _set = context.Set<TEntity>();
         }
 
-        public TEntity GetSingle(object key)
+        public TEntity Single(TKey key)
         {
-            return _set.Find(key);
+            return this._set.Find(key);
         }
 
         public IQueryable<TEntity> All()
         {
-            return _set;
+            return this._set;
         }
 
-        public IQueryable<TEntity> All(Expression<Func<TEntity, bool>> predicate)
+        public IQueryable<TEntity> Query(params Expression<Func<TEntity, bool>> [] predicates)
         {
-            return _set.Where(predicate);
+            IQueryable<TEntity> query = this._set;
+
+            if (predicates != null)
+            {
+                query = predicates.Aggregate(query, (current, predicate) => current.Where(predicate));
+            }
+
+            return query;
         }
 
         public IQueryable<TEntity> AllWithIncludes(params Expression<Func<TEntity, object>>[] includes)
         {
             IQueryable<TEntity> query = _set;
-            var exprParser = new ExpressionParser<TEntity, object>();
 
             foreach (var includeExpression in includes)
             {
-                string path = exprParser.GetPropertyPathFromExpression(includeExpression);
-                query = query.Include(path);
+                query = query.Include(includeExpression);
             }
 
             return query;
@@ -57,12 +62,10 @@ namespace Kilo.Data.EntityFramework
         public IQueryable<TEntity> AllWithIncludes(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] includes)
         {
             IQueryable<TEntity> query = _set.Where(predicate);
-            var exprParser = new ExpressionParser<TEntity, object>();
 
             foreach (var includeExpression in includes)
             {
-                string path = exprParser.GetPropertyPathFromExpression(includeExpression);
-                query = query.Include(path);
+                query = query.Include(includeExpression);
             }
 
             return query;
@@ -105,7 +108,9 @@ namespace Kilo.Data.EntityFramework
             var entry = _context.Entry<TEntity>(entity);
 
             if (entry != null)
+            {
                 entry.State = System.Data.Entity.EntityState.Detached;
+            }
         }
 
         public void SaveChanges()

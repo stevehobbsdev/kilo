@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="DbContextRepository.cs" />
     <Compile Include="EntityRepository.cs" />
+    <Compile Include="IEntityRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -13,7 +13,7 @@ namespace Kilo.TestConsole
     {
         static void Main(string[] args)
         {
-            DbContextRepository<User, MyContext> repo = new DbContextRepository<User, MyContext>();
+            var repo = new DbContextRepository<User, MyContext, int>();
 
             repo.All().ToList().ForEach(u =>
                 {
