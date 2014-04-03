@@ -51,6 +51,7 @@
     <Compile Include="TestSubjectBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Kilo.Testing.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
@@ -61,12 +62,5 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <Import Project="$(SolutionDir)\..\packageBuild\kilo.packages.targets" />
-  <PropertyGroup>
-    <BuildDependsOn>
-      $(BuildDependsOn);
-      PackageBuild
-    </BuildDependsOn>
-  </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
 </Project>
