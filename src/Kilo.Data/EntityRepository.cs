@@ -224,6 +224,16 @@ namespace Kilo.Data
 			return string.Format("{0}.{1}", context.DefaultContainerName, tableName);
 		}
 
-        
+        #region Not implemented
+        public void Commit()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Rollback()
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
     }
 }

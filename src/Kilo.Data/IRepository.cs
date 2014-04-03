@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 
 namespace Kilo.Data
 {
-	public interface IRepository<T>
+	public interface IRepository<T> : IWriteableRepository<T>
 	{
 		/// <summary>
 		/// Gets a single entity
@@ -37,24 +37,6 @@ namespace Kilo.Data
         /// <param name="predicate">A filtering predicate to perform on the resulting data set.</param>
         /// <param name="includes">The include expressions</param>
         IQueryable<T> AllWithIncludes(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes);
-
-		/// <summary>
-		/// Inserts the specified entity.
-		/// </summary>
-		/// <param name="entity">The entity.</param>
-		void Insert(T entity);
-
-		/// <summary>
-		/// Updates the specified entity.
-		/// </summary>
-		/// <param name="entity">The entity.</param>
-		void Update(T entity);
-
-		/// <summary>
-		/// Deletes the specified entity.
-		/// </summary>
-		/// <param name="entity">The entity.</param>
-		void Delete(T entity);
 
 		/// <summary>
 		/// Attaches the specified entity, optionally dictating the state to attach as.

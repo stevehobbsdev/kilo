@@ -113,10 +113,21 @@ namespace Kilo.Data
             _context.SaveChanges();
         }
 
+        #region Not applicable 
         public object GetObjectKey(TEntity entity)
         {
-            throw new InvalidOperationException();
+            throw new NotImplementedException();
         }
 
+        public void Commit()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Rollback()
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
     }
 }
