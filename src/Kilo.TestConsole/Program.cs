@@ -5,6 +5,7 @@ using System.Text;
 using Kilo.Configuration.Providers;
 using Kilo.Configuration;
 using Kilo.Data;
+using Kilo.Data.EntityFramework;
 
 namespace Kilo.TestConsole
 {

@@ -23,5 +23,18 @@ namespace Kilo.Data
         /// </summary>
         /// <param name="entity">The entity.</param>
         void Delete(TEntity entity);
+
+        /// <summary>
+        /// Attaches the specified entity, optionally dictating the state to attach as.
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        /// <param name="state">The state.</param>
+        void Attach(TEntity entity, State state = State.Unchanged);
+
+        /// <summary>
+        /// Detaches the specified entity.
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        void Detach(TEntity entity);
     }
 }

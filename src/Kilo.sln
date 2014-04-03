@@ -34,6 +34,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{8B033B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kilo.Data.Azure", "Kilo.Data.Azure\Kilo.Data.Azure.csproj", "{BBFF4868-19D0-4380-9017-BAF12533E7A4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kilo.Data.EntityFramework", "Kilo.Data.EntityFramework\Kilo.Data.EntityFramework.csproj", "{88B6856F-4A9A-4103-AACD-878598046DFF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -126,6 +128,16 @@ Global
 		{BBFF4868-19D0-4380-9017-BAF12533E7A4}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{BBFF4868-19D0-4380-9017-BAF12533E7A4}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{BBFF4868-19D0-4380-9017-BAF12533E7A4}.Release|x86.ActiveCfg = Release|Any CPU
+		{88B6856F-4A9A-4103-AACD-878598046DFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88B6856F-4A9A-4103-AACD-878598046DFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88B6856F-4A9A-4103-AACD-878598046DFF}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{88B6856F-4A9A-4103-AACD-878598046DFF}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{88B6856F-4A9A-4103-AACD-878598046DFF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{88B6856F-4A9A-4103-AACD-878598046DFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88B6856F-4A9A-4103-AACD-878598046DFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88B6856F-4A9A-4103-AACD-878598046DFF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{88B6856F-4A9A-4103-AACD-878598046DFF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{88B6856F-4A9A-4103-AACD-878598046DFF}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using Kilo.Expressions;
 
-namespace Kilo.Data
+namespace Kilo.Data.EntityFramework
 {
     public class DbContextRepository<TEntity, TContext> : IRepository<TEntity>
         where TEntity : class
@@ -91,11 +91,11 @@ namespace Kilo.Data
             switch (state)
             {
                 case State.Modified:
-                    entry.State = System.Data.EntityState.Modified;
+                    entry.State = EntityState.Modified;
                     break;
 
                 case State.New:
-                    entry.State = System.Data.EntityState.Added;
+                    entry.State = EntityState.Added;
                     break;
             }
         }
@@ -105,7 +105,7 @@ namespace Kilo.Data
             var entry = _context.Entry<TEntity>(entity);
 
             if (entry != null)
-                entry.State = System.Data.EntityState.Detached;
+                entry.State = System.Data.Entity.EntityState.Detached;
         }
 
         public void SaveChanges()

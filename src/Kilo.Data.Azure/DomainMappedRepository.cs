@@ -207,5 +207,13 @@ namespace Kilo.Data.Azure
         {
             this.ResetUnitOfWork();
         }
+
+        public void Attach(TDomain entity, State state = State.Unchanged)
+        {
+        }
+
+        public void Detach(TDomain entity)
+        {
+        }
     }
 }

@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Data.Objects;
-using System.Data.Objects.DataClasses;
-using System.Data;
-using System.Linq.Expressions;
+using System.Data.Entity;
+using System.Data.Entity.Core;
+using System.Data.Entity.Core.Objects;
+using System.Data.Entity.Core.Objects.DataClasses;
 using System.Diagnostics;
-using System.Reflection;
+using System.Linq;
+using System.Linq.Expressions;
 using Kilo.Expressions;
 
 namespace Kilo.Data
@@ -156,16 +154,13 @@ namespace Kilo.Data
 			_context.DeleteObject(entity);
 		}
 
-		/// <summary>
-		/// Saves the changes.
-		/// </summary>
-		public void SaveChanges()
-		{
+        public void Commit()
+        {
 #if DEBUG
-			Trace.WriteLine("Saving provider changes for " + this._objectSet.EntitySet.Name);
+            Trace.WriteLine("Saving provider changes for " + this._objectSet.EntitySet.Name);
 #endif
-			_context.SaveChanges();
-		}
+            _context.SaveChanges();
+        }
 
 		/// <summary>
 		/// Attaches the specified entity.
@@ -225,11 +220,6 @@ namespace Kilo.Data
 		}
 
         #region Not implemented
-        public void Commit()
-        {
-            throw new NotImplementedException();
-        }
-
         public void Rollback()
         {
             throw new NotImplementedException();
