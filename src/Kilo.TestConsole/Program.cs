@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Kilo.Configuration.Providers;
-using Kilo.Configuration;
 using Kilo.Data;
-using Kilo.Data.EntityFramework;
 using Kilo.Data.Azure;
 
 namespace Kilo.TestConsole
