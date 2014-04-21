@@ -3,6 +3,7 @@
 #################
 *.nupkg
 outputPackages/
+src/packages
 
 #################
 ## Eclipse

@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>Kilo.Data.Azure</id>
+    <version>$version$</version>
+    <authors>Steve Hobbs</authors>
+    <owners>Steve Hobbs</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Collection of helpers and utilities for working with Azure Storage</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright (C) Steve Hobbs 2014</copyright>
+    <dependencies>
+      <dependency id="Kilo" />
+      <dependency id="Kilo.Data" />
+      <dependency id="WindowsAzure.Storage" version="3.1.0.1" />
+    </dependencies>
+  </metadata>
+</package>

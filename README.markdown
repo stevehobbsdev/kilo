@@ -1,7 +1,1 @@
-A small set of libaries containing various helpers and extensions for .Net projects.
-
-Also hosted on Nuget.org using the following packages:
-
-**Install-Package Kilo**
-
-**Install-Package Kilo.Data**
+A small set of libaries containing various helpers and extensions for .Net projects, currently in development.

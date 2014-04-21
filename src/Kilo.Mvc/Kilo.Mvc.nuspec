@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>Kilo.Mvc</id>
+    <version>$version$</version>
+    <authors>Steve Hobbs</authors>
+    <owners>Steve Hobbs</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Collection of helpers and utility classes for the .Net framework, specifically targetting Asp.Net MVC 3</description>
+    <releaseNotes>Added expression parser for obtaining property paths from lambda expressions.</releaseNotes>
+    <copyright>Copyright (C) Steve Hobbs 2012</copyright>
+    <dependencies>
+      <dependency id="Kilo" />
+    </dependencies>
+  </metadata>
+</package>
