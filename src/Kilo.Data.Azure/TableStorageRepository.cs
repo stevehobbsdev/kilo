@@ -22,6 +22,16 @@ namespace Kilo.Data.Azure
         private UnitOfWorkContainer<T> _uow;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="TableStorageRepository{T}"/> class.
+        /// </summary>
+        /// <param name="connectionString">The connection string.</param>
+        /// <param name="tableName">Name of the table.</param>
+        public TableStorageRepository(string connectionString, string tableName)
+            : this(new StorageContext(connectionString), tableName)
+        {
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="TableStorageRepository{TSource}" /> class.
         /// </summary>
         /// <param name="tableName">Name of the table.</param>
@@ -158,6 +168,11 @@ namespace Kilo.Data.Azure
             this.ResetUnitOfWork();
         }
 
+        /// <summary>
+        /// Returns a single entity based on the input key
+        /// </summary>
+        /// <param name="key">The key of the entity to retrieve</param>
+        /// <returns>The single instance of the entity with the specified key, or null if the entity was not found</returns>
         public T Single(TableStorageKey key)
         {
             IQueryable<T> query = this.Table.CreateQuery<T>()
@@ -222,10 +237,19 @@ namespace Kilo.Data.Azure
             this.ResetUnitOfWork();
         }
 
+        /// <summary>
+        /// Attaches the specified entity.
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        /// <param name="state">The state.</param>
         public void Attach(T entity, State state = State.Unchanged)
         {
         }
 
+        /// <summary>
+        /// Detaches the specified entity.
+        /// </summary>
+        /// <param name="entity">The entity to detach.</param>
         public void Detach(T entity)
         {
         }
