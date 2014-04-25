@@ -7,9 +7,22 @@ namespace Kilo.Data.Azure
     public class BlobStorageRepository
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="BlobStorageRepository"/> class.
+        /// </summary>
+        /// <param name="connectionString">The connection string.</param>
+        /// <param name="containerName">Name of the container.</param>
+        /// <param name="publicAccess">if set to <c>true</c> [public access].</param>
+        public BlobStorageRepository(string connectionString, string containerName, bool publicAccess = false)
+            : this(new StorageContext(connectionString), containerName, publicAccess)
+        {
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="BlobStorageRepository" /> class.
         /// </summary>
-        /// <param name="context">The context.</param>
+        /// <param name="context">The storage context, describing how to connect to blob storage</param>
+        /// <param name="containerName">Name of the blob container.</param>
+        /// <param name="publicAccess">if set to <c>true</c>, a public access container is created.</param>
         public BlobStorageRepository(StorageContext context, string containerName, bool publicAccess = false)
         {
             if (context == null)
