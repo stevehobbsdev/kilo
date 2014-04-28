@@ -67,6 +67,9 @@ namespace Kilo.TestConsole
             {
                 Console.WriteLine(user2.Name);
             }
+
+            var users = await r.QueryAsync();
+            users.ToList().ForEach(u => Console.WriteLine(u.RowKey));
         }
 
         private static void PrintUser(User u)

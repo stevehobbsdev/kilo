@@ -18,7 +18,7 @@ namespace Kilo.Data.Azure
     /// <param name="context">Contextual information about the commit operation</param>
     public delegate void CommitEvent<T>(CommitContext<T> context) where T : class, ITableEntity, new();
 
-    public class TableStorageRepository<T> : IRepository<T, TableStorageKey>,  IWriteableRepository<T>
+    public class TableStorageRepository<T> : IRepository<T, TableStorageKey>, IWriteableRepository<T>
         where T : class, ITableEntity, new()
     {
         private UnitOfWorkContainer<T> _uow;
@@ -193,7 +193,7 @@ namespace Kilo.Data.Azure
         {
             var operation = TableOperation.Retrieve<T>(key.PartitionKey, key.RowKey);
 
-            var retrieveTask = 
+            var retrieveTask =
                 this.Table.ExecuteAsync(operation)
                 .ContinueWith(task =>
             {
@@ -221,6 +221,25 @@ namespace Kilo.Data.Azure
         }
 
         /// <summary>
+        /// Executes a query asyncronously
+        /// </summary>
+        /// <param name="predicates">The optional predicates to include in the query</param>
+        public Task<IEnumerable<T>> QueryAsync(params Expression<Func<T, bool>>[] predicates)
+        {
+            return new TaskFactory<IEnumerable<T>>().StartNew(() =>
+            {
+                IQueryable<T> tableQuery = this.Table.CreateQuery<T>();
+                
+                if (predicates != null)
+                {
+                    tableQuery = predicates.Aggregate(tableQuery, (current, pred) => current.Where(pred));
+                }
+
+                return ((TableQuery<T>)tableQuery).Execute();
+            });
+        }
+
+        /// <summary>
         /// Performs a query using the specified resolver.
         /// </summary>
         /// <param name="resolver">The resolver to use when performing the query</param>
@@ -241,7 +260,7 @@ namespace Kilo.Data.Azure
 
             return query;
         }
-        
+
         /// <summary>
         /// Resets the unit of work.
         /// </summary>
