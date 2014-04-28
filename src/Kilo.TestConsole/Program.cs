@@ -60,6 +60,13 @@ namespace Kilo.TestConsole
 
             r.Insert(user);
             await r.CommitAsync();
+
+            var user2 = await r.SingleAsync(new TableStorageKey("steve", "user"));
+
+            if (user2 != null)
+            {
+                Console.WriteLine(user2.Name);
+            }
         }
 
         private static void PrintUser(User u)

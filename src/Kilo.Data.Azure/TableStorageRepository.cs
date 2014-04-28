@@ -179,11 +179,28 @@ namespace Kilo.Data.Azure
         /// <returns>The single instance of the entity with the specified key, or null if the entity was not found</returns>
         public T Single(TableStorageKey key)
         {
-            IQueryable<T> query = this.Table.CreateQuery<T>()
-                .Where(t => t.PartitionKey == key.PartitionKey)
-                .Where(t => t.RowKey == key.RowKey);
+            var operation = TableOperation.Retrieve<T>(key.PartitionKey, key.RowKey);
 
-            return query.FirstOrDefault();
+            return this.Table.Execute(operation).Result as T;
+        }
+
+        /// <summary>
+        /// Gets a single object asynchronously
+        /// </summary>
+        /// <param name="key">The key of the object to return</param>
+        /// <returns>The object which matches the supplied key, or null if not found.</returns>
+        public Task<T> SingleAsync(TableStorageKey key)
+        {
+            var operation = TableOperation.Retrieve<T>(key.PartitionKey, key.RowKey);
+
+            var retrieveTask = 
+                this.Table.ExecuteAsync(operation)
+                .ContinueWith(task =>
+            {
+                return task.Result.Result as T;
+            });
+
+            return retrieveTask;
         }
 
         /// <summary>
