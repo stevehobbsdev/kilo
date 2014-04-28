@@ -6,6 +6,8 @@ using Microsoft.WindowsAzure.Storage.Table;
 using Microsoft.WindowsAzure.Storage.Table.Queryable;
 using Microsoft.WindowsAzure.Storage.Table.DataServices;
 using System.Diagnostics;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace Kilo.Data.Azure
 {
@@ -126,37 +128,7 @@ namespace Kilo.Data.Azure
         /// </summary>
         public void Commit()
         {
-            var batch = new TableBatchOperation();
-
-            this._uow.Inserts.ForEach(entity =>
-            {
-                if (this.EntityInserting != null)
-                {
-                    this.EntityInserting(new CommitContext<T>(entity, batch));
-                }
-
-                batch.InsertOrMerge(entity);
-            });
-
-            this._uow.Updates.ForEach(entity =>
-            {
-                if (this.EntityUpdating != null)
-                {
-                    this.EntityUpdating(new CommitContext<T>(entity, batch));
-                }
-
-                batch.Merge(entity);
-            });
-
-            this._uow.Deletes.ForEach(entity =>
-            {
-                if (this.EntityDeleting != null)
-                {
-                    this.EntityDeleting(new CommitContext<T>(entity, batch));
-                }
-
-                batch.Delete(entity);
-            });
+            var batch = CreateCommitOperation(this._uow);
 
             this.Table.ExecuteBatch(batch);
 
@@ -166,6 +138,38 @@ namespace Kilo.Data.Azure
             }
 
             this.ResetUnitOfWork();
+        }
+
+        /// <summary>
+        /// Commits the operations which are currently in the unit of work asyncronously
+        /// </summary>
+        /// <returns>The async task</returns>
+        public Task CommitAsync()
+        {
+            var commitTask = new Task(() =>
+            {
+                var batch = CreateCommitOperation(this._uow);
+
+                this.Table.ExecuteBatchAsync(batch);
+            });
+
+            var notificationTask = commitTask.ContinueWith(t =>
+            {
+                if (t.IsCompleted && !t.IsFaulted && !t.IsCanceled)
+                {
+                    if (this.BatchCommitted != null)
+                    {
+                        this.BatchCommitted(this, new EventArgs());
+                    }
+
+                    this.ResetUnitOfWork();
+                }
+
+            }, TaskScheduler.FromCurrentSynchronizationContext());
+
+            commitTask.Start();
+
+            return commitTask;
         }
 
         /// <summary>
@@ -252,6 +256,47 @@ namespace Kilo.Data.Azure
         /// <param name="entity">The entity to detach.</param>
         public void Detach(T entity)
         {
+        }
+
+        /// <summary>
+        /// Creates the operation which is used to commit data, based on a unit of work
+        /// </summary>
+        /// <returns></returns>
+        private TableBatchOperation CreateCommitOperation(UnitOfWorkContainer<T> uow)
+        {
+            var batch = new TableBatchOperation();
+
+            uow.Inserts.ForEach(entity =>
+            {
+                if (this.EntityInserting != null)
+                {
+                    this.EntityInserting(new CommitContext<T>(entity, batch));
+                }
+
+                batch.InsertOrMerge(entity);
+            });
+
+            uow.Updates.ForEach(entity =>
+            {
+                if (this.EntityUpdating != null)
+                {
+                    this.EntityUpdating(new CommitContext<T>(entity, batch));
+                }
+
+                batch.Merge(entity);
+            });
+
+            uow.Deletes.ForEach(entity =>
+            {
+                if (this.EntityDeleting != null)
+                {
+                    this.EntityDeleting(new CommitContext<T>(entity, batch));
+                }
+
+                batch.Delete(entity);
+            });
+
+            return batch;
         }
     }
 }

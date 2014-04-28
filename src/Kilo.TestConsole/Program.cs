@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
 using Kilo.Data;
 using Kilo.Data.Azure;
 
 namespace Kilo.TestConsole
 {
-    class LocalUser
+    /*class LocalUser
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
@@ -28,18 +29,37 @@ namespace Kilo.TestConsole
                 Email = "elkdanger@googlemail.com"
             };
         }
-    }
+    }*/
 
     class Program
     {
         static void Main(string[] args)
         {
-            IRepository<User, LocalUser, TableStorageKey> ats 
-                = new DomainMappedRepository<User, LocalUser>(new DevelopmentStorageContext(), "Users", new UserMapper());
+            SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
 
-            var results = ats.Query().ToList();
+            SaveUser();
 
             Console.ReadKey();
+        }
+
+        private static async void SaveUser()
+        {
+            var r = new TableStorageRepository<User>(new DevelopmentStorageContext(), "Users");
+
+            var user = new User
+            {
+                PartitionKey = "user",
+                RowKey = "steve",
+                Name = "Steve Hobbs",
+            };
+
+            r.BatchCommitted += (s, a) =>
+            {
+                Console.WriteLine("Committed..");
+            };
+
+            r.Insert(user);
+            await r.CommitAsync();
         }
 
         private static void PrintUser(User u)
