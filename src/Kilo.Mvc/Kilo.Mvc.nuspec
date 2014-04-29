@@ -11,6 +11,7 @@
     <copyright>Copyright (C) Steve Hobbs 2012</copyright>
     <dependencies>
       <dependency id="Kilo" />
+      <dependency id="Microsoft.AspNet.Web.Optimization" />
     </dependencies>
   </metadata>
 </package>
