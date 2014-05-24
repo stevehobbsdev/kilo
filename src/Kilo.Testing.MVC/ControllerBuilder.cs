@@ -1,4 +1,5 @@
-﻿using System.Collections.Specialized;
+﻿using System;
+using System.Collections.Specialized;
 using System.Security.Principal;
 using System.Web;
 using System.Web.Mvc;
@@ -114,6 +115,21 @@ namespace Kilo.Testing.Mvc
         public ControllerBuilder<T> WithIdentity(IIdentity userIdentity, string [] roles = null)
         {
             this.Context.SetupGet(c => c.User).Returns(new GenericPrincipal(userIdentity, roles));
+            return this;
+        }
+
+        /// <summary>
+        /// Sets up the controller to return the specified security principal when asked.
+        /// </summary>
+        /// <param name="principal">The security principal to return</param>
+        public ControllerBuilder<T> WithPrincipal(IPrincipal principal)
+        {
+            if (principal == null)
+            {
+                throw new ArgumentNullException("principal");
+            }
+
+            this.Context.SetupGet(c => c.User).Returns(principal);
             return this;
         }
 
