@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace Kilo.Data
 {
-    public interface IRepository<T, TKey>
+    public interface IQueryableRepository<T, TKey>
     {
         /// <summary>
         /// Gets a single entity
@@ -18,7 +18,7 @@ namespace Kilo.Data
         IQueryable<T> Query(params Expression<Func<T, bool>>[] predicates);
     }
 
-	public interface IRepository<TTable, TDomain, TKey>
+    public interface IQueryableRepository<TTable, TDomain, TKey>
 	{
 		/// <summary>
 		/// Gets a single entity

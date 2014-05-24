@@ -2,12 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Table;
 using Microsoft.WindowsAzure.Storage.Table.Queryable;
-using Microsoft.WindowsAzure.Storage.Table.DataServices;
-using System.Diagnostics;
-using System.Threading.Tasks;
-using System.Threading;
 
 namespace Kilo.Data.Azure
 {
@@ -18,7 +15,7 @@ namespace Kilo.Data.Azure
     /// <param name="context">Contextual information about the commit operation</param>
     public delegate void CommitEvent<T>(CommitContext<T> context) where T : class, ITableEntity, new();
 
-    public class TableStorageRepository<T> : IRepository<T, TableStorageKey>, IWriteableRepository<T>
+    public class TableStorageRepository<T> : IDuplexRepository<T, TableStorageKey>
         where T : class, ITableEntity, new()
     {
         private UnitOfWorkContainer<T> _uow;

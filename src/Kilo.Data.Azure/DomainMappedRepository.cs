@@ -6,7 +6,7 @@ using Microsoft.WindowsAzure.Storage.Table;
 
 namespace Kilo.Data.Azure
 {
-    public class DomainMappedRepository<TTable, TDomain> : IRepository<TTable, TDomain, TableStorageKey>, IWriteableRepository<TDomain>
+    public class DomainMappedRepository<TTable, TDomain> : IDuplexRepository<TTable, TDomain, TableStorageKey>
         where TTable : TableEntity, new()
     {
         private UnitOfWorkContainer<TDomain> _uow;
