@@ -8,12 +8,12 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Collection of helpers and utility classes unit testing within the .Net Framework</description>
     <copyright>Copyright (C) Steve Hobbs 2013</copyright>
-    <releaseNotes></releaseNotes>
+    <releaseNotes>Package now references correct Asp.Net MVC nuget packages.</releaseNotes>
     <dependencies>
       <group>
         <dependency id="Moq" />
         <dependency id="Kilo.Testing" />
-        <dependency id="aspnetmvc" version="4.0.20710.0" />
+        <dependency id="Microsoft.AspNet.Mvc" version="4.0.30506.0" />
       </group>
     </dependencies>
   </metadata>
