@@ -96,7 +96,7 @@ namespace Kilo.Testing.Mvc
         /// <param name="result">The result.</param>
         /// <param name="model">The model.</param>
         [DebuggerHidden]
-        public static void VerifyModel<T>(this ViewResultBase result, T model)
+        public static void VerifyModelInstance<T>(this ViewResultBase result, T model)
         {
             Assert.AreSame(result.Model, model);
         }
@@ -121,7 +121,7 @@ namespace Kilo.Testing.Mvc
         /// <param name="result">The result.</param>
         /// <param name="model">The model.</param>
         [DebuggerHidden]
-        public static void VerifyModel<T>(this JsonResult result, T model)
+        public static void VerifyModelInstance<T>(this JsonResult result, T model)
         {
             Assert.AreSame(result.Data, model);
         }
