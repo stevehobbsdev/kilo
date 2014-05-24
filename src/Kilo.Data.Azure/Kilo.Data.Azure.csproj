@@ -71,6 +71,7 @@
     <Compile Include="CommitContext.cs" />
     <Compile Include="DevelopmentStorageContext.cs" />
     <Compile Include="DomainMappedRepository.cs" />
+    <Compile Include="IBlobRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StorageContext.cs" />
     <Compile Include="TableStorageKey.cs" />

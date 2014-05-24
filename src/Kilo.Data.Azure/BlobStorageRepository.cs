@@ -4,7 +4,7 @@ using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace Kilo.Data.Azure
 {
-    public class BlobStorageRepository
+    public class BlobStorageRepository : IBlobRepository
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BlobStorageRepository"/> class.

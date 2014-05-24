@@ -46,6 +46,7 @@
     <Compile Include="Caching\CachedRepository.cs" />
     <Compile Include="Caching\DefaultCacheProvider.cs" />
     <Compile Include="Caching\ICacheProvider.cs" />
+    <Compile Include="IBlobRepository.cs" />
     <Compile Include="IDuplexRepository.cs" />
     <Compile Include="IEntityMapper.cs" />
     <Compile Include="IQueryableRepository.cs" />
