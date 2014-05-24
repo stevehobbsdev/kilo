@@ -81,6 +81,7 @@ namespace Kilo.Data.Azure
 
             var dataStream = new MemoryStream();
             block.DownloadToStream(dataStream);
+            dataStream.Position = 0;
             
             return dataStream;
         }

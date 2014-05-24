@@ -6,7 +6,7 @@ namespace Kilo.Data
     /// </summary>
     /// <typeparam name="TDomain">The domain entity type</typeparam>
     /// <typeparam name="TKey">The key type</typeparam>
-    public interface IDuplexRepository<TDomain, TKey> : IQueryableRepository<TDomain, TKey>, IWriteableRepository<TDomain>
+    public interface IDuplexRepository<TDomain> : IQueryableRepository<TDomain>, IWriteableRepository<TDomain>
     {
     }
 
@@ -16,7 +16,7 @@ namespace Kilo.Data
     /// <typeparam name="TTable">The type of the table.</typeparam>
     /// <typeparam name="TDomain">The type of the domain.</typeparam>
     /// <typeparam name="TKey">The type of the key.</typeparam>
-    public interface IDuplexRepository<TTable, TDomain, TKey> : IQueryableRepository<TTable, TDomain, TKey>, IWriteableRepository<TDomain>
+    public interface IDuplexRepository<TTable, TDomain> : IQueryableRepository<TTable, TDomain>, IWriteableRepository<TDomain>
     {
     }
 }

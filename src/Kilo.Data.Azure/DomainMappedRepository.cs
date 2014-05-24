@@ -6,7 +6,7 @@ using Microsoft.WindowsAzure.Storage.Table;
 
 namespace Kilo.Data.Azure
 {
-    public class DomainMappedRepository<TTable, TDomain> : IDuplexRepository<TTable, TDomain, TableStorageKey>
+    public class DomainMappedRepository<TTable, TDomain> : IDuplexRepository<TTable, TDomain>
         where TTable : TableEntity, new()
     {
         private UnitOfWorkContainer<TDomain> _uow;
@@ -135,7 +135,7 @@ namespace Kilo.Data.Azure
         /// Gets the entity.
         /// </summary>
         /// <param name="specifications">The specifications.</param>
-        public TDomain Single(TableStorageKey key)
+        public TDomain Single(dynamic key)
         {
             var entity = this._repository.Single(key);
 

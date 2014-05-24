@@ -4,13 +4,13 @@ using System.Linq.Expressions;
 
 namespace Kilo.Data
 {
-    public interface IQueryableRepository<T, TKey>
+    public interface IQueryableRepository<T>
     {
         /// <summary>
         /// Gets a single entity
         /// </summary>
         /// <param name="key">The key.</param>
-        T Single(TKey key);
+        T Single(dynamic key);
 
         /// <summary>
         /// Gets all the data using the specified predicate
@@ -18,13 +18,13 @@ namespace Kilo.Data
         IQueryable<T> Query(params Expression<Func<T, bool>>[] predicates);
     }
 
-    public interface IQueryableRepository<TTable, TDomain, TKey>
+    public interface IQueryableRepository<TTable, TDomain>
 	{
 		/// <summary>
 		/// Gets a single entity
 		/// </summary>
 		/// <param name="key">The key.</param>
-        TDomain Single(TKey key);
+        TDomain Single(dynamic key);
 
 		/// <summary>
 		/// Gets all the data using the specified predicate

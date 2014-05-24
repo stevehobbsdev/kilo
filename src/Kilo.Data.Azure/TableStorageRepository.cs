@@ -15,7 +15,7 @@ namespace Kilo.Data.Azure
     /// <param name="context">Contextual information about the commit operation</param>
     public delegate void CommitEvent<T>(CommitContext<T> context) where T : class, ITableEntity, new();
 
-    public class TableStorageRepository<T> : IDuplexRepository<T, TableStorageKey>
+    public class TableStorageRepository<T> : IDuplexRepository<T>
         where T : class, ITableEntity, new()
     {
         private UnitOfWorkContainer<T> _uow;
@@ -174,7 +174,7 @@ namespace Kilo.Data.Azure
         /// </summary>
         /// <param name="key">The key of the entity to retrieve</param>
         /// <returns>The single instance of the entity with the specified key, or null if the entity was not found</returns>
-        public T Single(TableStorageKey key)
+        public T Single(dynamic key)
         {
             var operation = TableOperation.Retrieve<T>(key.PartitionKey, key.RowKey);
 
@@ -186,9 +186,9 @@ namespace Kilo.Data.Azure
         /// </summary>
         /// <param name="key">The key of the object to return</param>
         /// <returns>The object which matches the supplied key, or null if not found.</returns>
-        public Task<T> SingleAsync(TableStorageKey key)
+        public Task<T> SingleAsync(dynamic key)
         {
-            var operation = TableOperation.Retrieve<T>(key.PartitionKey, key.RowKey);
+            TableOperation operation = TableOperation.Retrieve<T>(key.PartitionKey, key.RowKey);
 
             var retrieveTask =
                 this.Table.ExecuteAsync(operation)
