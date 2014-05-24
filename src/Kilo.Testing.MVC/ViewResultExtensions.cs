@@ -90,6 +90,18 @@ namespace Kilo.Testing.Mvc
         }
 
         /// <summary>
+        /// Verifies that the specified model is the same instance that appears on the view result.
+        /// </summary>
+        /// <typeparam name="T">The model type</typeparam>
+        /// <param name="result">The result.</param>
+        /// <param name="model">The model.</param>
+        [DebuggerHidden]
+        public static void VerifyModel<T>(this ViewResultBase result, T model)
+        {
+            Assert.AreSame(result.Model, model);
+        }
+
+        /// <summary>
         /// Verifies that the model meets the specified criteria
         /// </summary>
         /// <typeparam name="T">The type of the model</typeparam>
@@ -100,6 +112,18 @@ namespace Kilo.Testing.Mvc
         {
             Assert.IsNotNull(result);
             VerifyModel<T>(result.Data as T, predicate);
+        }
+
+        /// <summary>
+        /// Verifies that the specified model is the same instance that appears on the view result.
+        /// </summary>
+        /// <typeparam name="T">The model type</typeparam>
+        /// <param name="result">The result.</param>
+        /// <param name="model">The model.</param>
+        [DebuggerHidden]
+        public static void VerifyModel<T>(this JsonResult result, T model)
+        {
+            Assert.AreSame(result.Data, model);
         }
 
         /// <summary>
