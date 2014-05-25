@@ -42,7 +42,7 @@ namespace Kilo.Data.Azure
             {
                 throw new ArgumentNullException("entity");
             }
-            
+
             this._uow.Inserts.Add(entity);
         }
 
@@ -56,7 +56,7 @@ namespace Kilo.Data.Azure
             {
                 throw new ArgumentNullException("entity");
             }
-            
+
             this._uow.Updates.Add(entity);
         }
 
@@ -70,7 +70,7 @@ namespace Kilo.Data.Azure
             {
                 throw new ArgumentNullException("entity");
             }
-            
+
             this._uow.Deletes.Add(entity);
         }
 
@@ -147,6 +147,17 @@ namespace Kilo.Data.Azure
         }
 
         /// <summary>
+        /// Returns the first entity in the query based on the predicates.
+        /// </summary>
+        /// <param name="predicates">The predicates.</param>
+        public TDomain First(params Expression<Func<TTable, bool>>[] predicates)
+        {
+            var entity = this._repository.First(predicates);
+
+            return this.ConvertFromTableEntity(entity);
+        }
+
+        /// <summary>
         /// Called just before the entity is inserted into the table operation
         /// </summary>
         /// <param name="domainEntity">The source entity.</param>
@@ -208,7 +219,7 @@ namespace Kilo.Data.Azure
 
             return domainEntities.AsQueryable();
         }
-        
+
         /// <summary>
         /// Resets the unit of work.
         /// </summary>

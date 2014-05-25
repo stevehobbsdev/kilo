@@ -201,6 +201,15 @@ namespace Kilo.Data.Azure
         }
 
         /// <summary>
+        /// Gets the first entity in the specified query
+        /// </summary>
+        /// <param name="predicates">The predicates to apply to the query.</param>
+        public T First(params Expression<Func<T, bool>>[] predicates)
+        {
+            return this.Query(predicates).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Gets entities based on a predicate filter.
         /// </summary>
         /// <param name="partitionKey">The partition key to filter on. A filter for partitionKey is automatically included by default.</param>
