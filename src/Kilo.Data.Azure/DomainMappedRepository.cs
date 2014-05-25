@@ -8,6 +8,7 @@ namespace Kilo.Data.Azure
 {
     public class DomainMappedRepository<TTable, TDomain> : IDuplexRepository<TTable, TDomain>
         where TTable : TableEntity, new()
+        where TDomain : class
     {
         private UnitOfWorkContainer<TDomain> _uow;
         private TableStorageRepository<TTable> _repository;
@@ -143,7 +144,14 @@ namespace Kilo.Data.Azure
         {
             var entity = this._repository.Single(key);
 
-            return this.ConvertFromTableEntity(entity);
+            if(entity != null)
+            {
+                return this.ConvertFromTableEntity(entity);
+            }
+            else
+            {
+                return null;
+            }
         }
 
         /// <summary>
@@ -154,7 +162,14 @@ namespace Kilo.Data.Azure
         {
             var entity = this._repository.First(predicates);
 
-            return this.ConvertFromTableEntity(entity);
+            if (entity != null)
+            {
+                return this.ConvertFromTableEntity(entity);
+            }
+            else
+            {
+                return null;
+            }
         }
 
         /// <summary>
