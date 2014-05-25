@@ -110,10 +110,7 @@ namespace Kilo.Data.Azure
         {
             var entities = this._repository.Query(predicates);
 
-            var domainEntities = entities.ToList()
-                .Select(e => this.ConvertFromTableEntity(e));
-
-            return domainEntities.AsQueryable();
+            return this.MapQuery(entities);
         }
 
         /// <summary>
@@ -125,10 +122,17 @@ namespace Kilo.Data.Azure
         {
             var entities = this._repository.QueryWithResolver(resolver, predicates);
 
-            var domainEntities = entities.ToList()
-                .Select(e => this.ConvertFromTableEntity(e));
+            return this.MapQuery(entities);
+        }
 
-            return domainEntities.AsQueryable();
+        /// <summary>
+        /// Performs a raw table query, returning a query expression.
+        /// </summary>
+        /// <param name="predicates">The optional predicates to apply to the query</param>
+        /// <returns>A query expression for retrieving the required data.</returns>
+        public IQueryable<TTable> TableQuery(params Expression<Func<TTable, bool>>[] predicates)
+        {
+            return this._repository.Query(predicates);
         }
 
         /// <summary>
@@ -191,6 +195,18 @@ namespace Kilo.Data.Azure
         public TDomain ConvertFromTableEntity(TTable entity)
         {
             return this.Mapper.MapFromEntity(entity);
+        }
+
+        /// <summary>
+        /// Maps a table query into a domain queryable object. Note, this will execute the query in the process.
+        /// </summary>
+        /// <param name="query">The query to map</param>
+        public IQueryable<TDomain> MapQuery(IQueryable<TTable> query)
+        {
+            var domainEntities = query.ToList()
+                .Select(e => this.ConvertFromTableEntity(e));
+
+            return domainEntities.AsQueryable();
         }
         
         /// <summary>
