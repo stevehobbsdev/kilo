@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace Kilo.Data.Azure
@@ -59,31 +60,63 @@ namespace Kilo.Data.Azure
         public CloudBlobContainer BlobContainer { get; private set; }
 
         /// <summary>
-        /// Uploads the BLOB data.
+        /// Uploads the blob data.
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="data">The data.</param>
+        /// <param name="contentType">Mime type of the content.</param>
         public void UploadBlobData(string name, Stream data, string contentType)
         {
             var block = this.BlobContainer.GetBlockBlobReference(name);
-
             block.Properties.ContentType = contentType;
+
             block.UploadFromStream(data);
         }
 
         /// <summary>
-        /// Gets the BLOB data.
+        /// Uploads the blob data asynchronously
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="data">The data.</param>
+        /// <param name="contentType">Mime type of the content.</param>
+        public Task UploadBlobDataAsync(string name, Stream data, string contentType)
+        {
+            var block = this.BlobContainer.GetBlockBlobReference(name);
+            block.Properties.ContentType = contentType;
+
+            return block.UploadFromStreamAsync(data);
+        }
+
+        /// <summary>
+        /// Gets the blob data.
         /// </summary>
         /// <param name="name">The name.</param>
         public Stream GetBlobData(string name)
         {
             var block = this.BlobContainer.GetBlockBlobReference(name);
-
             var dataStream = new MemoryStream();
+
             block.DownloadToStream(dataStream);
             dataStream.Position = 0;
             
             return dataStream;
+        }
+
+        /// <summary>
+        /// Gets the blob data asyncronously
+        /// </summary>
+        /// <param name="name">The name.</param>
+        public Task<Stream> GetBlobDataAsync(string name)
+        {
+            var block = this.BlobContainer.GetBlockBlobReference(name);
+            var dataStream = new MemoryStream();
+
+            return block.DownloadToStreamAsync(dataStream)
+                .ContinueWith<Stream>(t =>
+                {
+                    dataStream.Position = 0;
+                    return dataStream;
+                });
         }
 
         /// <summary>

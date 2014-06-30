@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace Kilo.Data.Azure
 {
@@ -31,5 +32,13 @@ namespace Kilo.Data.Azure
         /// <param name="data">The data.</param>
         /// <param name="contentType">Type of the content.</param>
         void UploadBlobData(string name, Stream data, string contentType);
+
+        /// <summary>
+        /// Uploads the blob data asynchronously
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="data">The data.</param>
+        /// <param name="contentType">Mime type of the content.</param>
+        Task UploadBlobDataAsync(string name, Stream data, string contentType);
     }
 }
