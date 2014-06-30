@@ -20,6 +20,12 @@ namespace Kilo.Data.Azure
         Stream GetBlobData(string name);
 
         /// <summary>
+        /// Gets the blob data asyncronously
+        /// </summary>
+        /// <param name="name">The name.</param>
+        Task<Stream> GetBlobDataAsync(string name);
+
+        /// <summary>
         /// Gets the blob URL.
         /// </summary>
         /// <param name="filename">The filename.</param>
