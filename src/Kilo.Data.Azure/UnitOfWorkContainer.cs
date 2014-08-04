@@ -37,6 +37,11 @@ namespace Kilo.Data.Azure
         public static void ApplyToBatch<T>(this UnitOfWorkContainer<T> unitOfWork, TableBatchOperation batchOperation)
             where T : TableEntity
         {
+            unitOfWork.Deletes.ForEach(e =>
+            {
+                batchOperation.Delete(e);
+            });
+
             unitOfWork.Inserts.ForEach(e =>
             {
                 batchOperation.InsertOrMerge(e);
@@ -46,11 +51,6 @@ namespace Kilo.Data.Azure
             {
                 batchOperation.Merge(e);
             });
-
-            unitOfWork.Deletes.ForEach(e =>
-            {
-                batchOperation.Delete(e);
-            });
         }
 
         public static void ApplyToBatch<TSource>(this UnitOfWorkContainer<TSource> unitOfWork, TableBatchOperation batchOperation, Func<TSource, ITableEntity> transform)
@@ -59,7 +59,12 @@ namespace Kilo.Data.Azure
             {
                 throw new ArgumentNullException("transform");
             }
-            
+
+            unitOfWork.Deletes.ForEach(e =>
+            {
+                batchOperation.Delete(transform(e));
+            });
+
             unitOfWork.Inserts.ForEach(e =>
             {
                 batchOperation.InsertOrMerge(transform(e));
@@ -68,11 +73,6 @@ namespace Kilo.Data.Azure
             unitOfWork.Updates.ForEach(e =>
             {
                 batchOperation.Merge(transform(e));
-            });
-
-            unitOfWork.Deletes.ForEach(e =>
-            {
-                batchOperation.Delete(transform(e));
             });
         }
     }
