@@ -10,7 +10,7 @@ namespace Kilo.Data.Azure
         where TTable : TableEntity, new()
         where TDomain : class
     {
-        private UnitOfWorkContainer<TDomain> _uow;
+        private UnitOfWorkContainer<TDomain> _uow = new UnitOfWorkContainer<TDomain>();
         private TableStorageRepository<TTable> _repository;
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace Kilo.Data.Azure
                 throw new ArgumentNullException("entity");
             }
 
-            this._uow.Inserts.Add(entity);
+            this._uow.Insert(entity);
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace Kilo.Data.Azure
                 throw new ArgumentNullException("entity");
             }
 
-            this._uow.Updates.Add(entity);
+            this._uow.Update(entity);
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace Kilo.Data.Azure
                 throw new ArgumentNullException("entity");
             }
 
-            this._uow.Deletes.Add(entity);
+            this._uow.Delete(entity);
         }
 
         /// <summary>
@@ -80,22 +80,31 @@ namespace Kilo.Data.Azure
         /// </summary>
         public virtual void Commit()
         {
-            this._uow.Inserts.ForEach(domainEntity =>
+            this._uow.GetJournal().ForEach(j =>
             {
-                var tableEntity = this.ConvertToTableEntity(domainEntity);
-                this._repository.Insert(tableEntity);
-            });
+                switch(j.Type)
+                {
+                    case UnitOfWorkEntryType.Insert:
+                        {
+                            var tableEntity = this.ConvertToTableEntity(j.Entity);
+                            this._repository.Insert(tableEntity);
+                        }
+                        break;
 
-            this._uow.Updates.ForEach(domainEntity =>
-            {
-                var tableEntity = this.ConvertToTableEntity(domainEntity);
-                this._repository.Update(tableEntity);
-            });
+                    case UnitOfWorkEntryType.Update:
+                        {
+                            var tableEntity = this.ConvertToTableEntity(j.Entity);
+                            this._repository.Update(tableEntity);
+                        }
+                        break;
 
-            this._uow.Deletes.ForEach(domainEntity =>
-            {
-                var tableEntity = this.ConvertToTableEntity(domainEntity);
-                this._repository.Delete(tableEntity);
+                    case UnitOfWorkEntryType.Delete:
+                        {
+                            var tableEntity = this.ConvertToTableEntity(j.Entity);
+                            this._repository.Delete(tableEntity);
+                        }
+                        break;
+                }
             });
 
             this._repository.Commit();
@@ -240,7 +249,7 @@ namespace Kilo.Data.Azure
         /// </summary>
         protected virtual void ResetUnitOfWork()
         {
-            this._uow = new UnitOfWorkContainer<TDomain>();
+            this._uow.Reset();
         }
 
         /// <summary>

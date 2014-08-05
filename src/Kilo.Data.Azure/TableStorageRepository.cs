@@ -99,7 +99,7 @@ namespace Kilo.Data.Azure
         /// <param name="entity">The entity.</param>
         public void Insert(T entity)
         {
-            this._uow.Inserts.Add(entity);
+            this._uow.Insert(entity);
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace Kilo.Data.Azure
         /// <param name="entity">The entity.</param>
         public void Update(T entity)
         {
-            this._uow.Updates.Add(entity);
+            this._uow.Update(entity);
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace Kilo.Data.Azure
         /// <param name="entity">The entity.</param>
         public void Delete(T entity)
         {
-            this._uow.Deletes.Add(entity);
+            this._uow.Delete(entity);
         }
 
         /// <summary>
@@ -125,9 +125,7 @@ namespace Kilo.Data.Azure
         /// </summary>
         public void Commit()
         {
-            var batch = CreateCommitOperation(this._uow);
-
-            this.Table.ExecuteBatch(batch);
+            CreateCommitOperation(this._uow).ForEach(batch => this.Table.ExecuteBatch(batch));
 
             if (this.BatchCommitted != null)
             {
@@ -145,9 +143,7 @@ namespace Kilo.Data.Azure
         {
             var commitTask = new Task(() =>
             {
-                var batch = CreateCommitOperation(this._uow);
-
-                this.Table.ExecuteBatchAsync(batch);
+                CreateCommitOperation(this._uow).ForEach(batch => this.Table.ExecuteBatchAsync(batch));
             });
 
             var notificationTask = commitTask.ContinueWith(t =>
@@ -304,41 +300,62 @@ namespace Kilo.Data.Azure
         /// Creates the operation which is used to commit data, based on a unit of work
         /// </summary>
         /// <returns></returns>
-        private TableBatchOperation CreateCommitOperation(UnitOfWorkContainer<T> uow)
+        private IEnumerable<TableBatchOperation> CreateCommitOperation(UnitOfWorkContainer<T> uow)
         {
-            var batch = new TableBatchOperation();
+            var batchCollection = new List<TableBatchOperation>();
+            var journal = this._uow.GetJournal();
 
-            uow.Inserts.ForEach(entity =>
+            // Organise the journal into order, grouped by partition key
+            var journalGroups = journal.ToLookup(l => l.Entity.PartitionKey);
+
+            foreach (var entries in journalGroups)
             {
-                if (this.EntityInserting != null)
+                var ordered = entries.OrderBy(i => i.Tick).ToList();
+                var batch = new TableBatchOperation();
+
+                entries.ForEach(entry =>
                 {
-                    this.EntityInserting(new CommitContext<T>(entity, batch));
-                }
+                    switch (entry.Type)
+                    {
+                        case UnitOfWorkEntryType.Insert:
+                            {
+                                if (this.EntityInserting != null)
+                                {
+                                    this.EntityInserting(new CommitContext<T>(entry.Entity, batch));
+                                }
 
-                batch.InsertOrMerge(entity);
-            });
+                                batch.InsertOrMerge(entry.Entity);
+                            }
+                            break;
 
-            uow.Updates.ForEach(entity =>
-            {
-                if (this.EntityUpdating != null)
-                {
-                    this.EntityUpdating(new CommitContext<T>(entity, batch));
-                }
+                        case UnitOfWorkEntryType.Update:
+                            {
+                                if (this.EntityUpdating != null)
+                                {
+                                    this.EntityUpdating(new CommitContext<T>(entry.Entity, batch));
+                                }
 
-                batch.Merge(entity);
-            });
+                                batch.Merge(entry.Entity);
+                            }
+                            break;
 
-            uow.Deletes.ForEach(entity =>
-            {
-                if (this.EntityDeleting != null)
-                {
-                    this.EntityDeleting(new CommitContext<T>(entity, batch));
-                }
+                        case UnitOfWorkEntryType.Delete:
+                            {
+                                if (this.EntityDeleting != null)
+                                {
+                                    this.EntityDeleting(new CommitContext<T>(entry.Entity, batch));
+                                }
 
-                batch.Delete(entity);
-            });
+                                batch.Delete(entry.Entity);
+                            }
+                            break;
+                    }
+                });
 
-            return batch;
+                batchCollection.Add(batch);
+            }
+
+            return batchCollection;
         }
     }
 }
