@@ -12,6 +12,8 @@ namespace Kilo.Networking
         private TcpListener listener;
         private TraceSource trace = new TraceSource("Kilo.Networking.SocketListener");
 
+        public event MessageEventHandler MessageReceived;
+
         public IPEndPoint EndPoint { get; private set; }
 
         /// <summary>
@@ -104,6 +106,8 @@ namespace Kilo.Networking
         protected virtual void OnMessageReceived(SocketHandler handler, ISocketMessage message)
         {
             trace.TraceEvent(TraceEventType.Verbose, 0, $"Received { message.MessageTypeId } ({ message.MessageLength } bytes): {message.GetType()}");
+
+            this.MessageReceived?.Invoke(this, new SocketMessageEventArgs(message));
         }
     }
 }
