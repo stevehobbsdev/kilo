@@ -57,6 +57,7 @@
     <Compile Include="SocketMessage.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Kilo.Networking.nuspec" />
     <None Include="packages.config" />
     <None Include="readme.md" />
   </ItemGroup>
