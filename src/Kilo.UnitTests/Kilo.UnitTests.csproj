@@ -68,6 +68,7 @@
     <Compile Include="Configuration.cs" />
     <Compile Include="Fakes\ConfigurationProvider.cs" />
     <Compile Include="Fakes\ValidationTestObject.cs" />
+    <Compile Include="NetworkTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Expressions.cs" />
     <Compile Include="Enum.cs" />

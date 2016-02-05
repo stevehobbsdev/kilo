@@ -200,7 +200,7 @@ namespace Kilo.Networking
                         if (message.MessageTypeId == (int)MessageOperation.Echo)
                         {
                             trace.TraceEvent(TraceEventType.Information, 0, $"Echo message received, returning the data");
-                            this.Send((int)MessageOperation.EchoReturn, message.MessageLength, message.GetStream(), handle);
+                            this.Send((int)MessageOperation.EchoReturn, message.MessageLength, message.GetStream(), incomingHandle);
                         }
                     }
                     finally
