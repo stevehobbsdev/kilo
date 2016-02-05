@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30324.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kilo", "Kilo\Kilo.csproj", "{B1EE4BAB-A687-4B4F-B7F7-61F76B0EC38C}"
 EndProject
@@ -35,6 +35,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kilo.Data.Azure", "Kilo.Data.Azure\Kilo.Data.Azure.csproj", "{BBFF4868-19D0-4380-9017-BAF12533E7A4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kilo.Data.EntityFramework", "Kilo.Data.EntityFramework\Kilo.Data.EntityFramework.csproj", "{88B6856F-4A9A-4103-AACD-878598046DFF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kilo.Networking", "Kilo.Networking\Kilo.Networking.csproj", "{71E91CE9-4FB3-4A8F-A4C7-60F77407CF19}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -138,6 +140,18 @@ Global
 		{88B6856F-4A9A-4103-AACD-878598046DFF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{88B6856F-4A9A-4103-AACD-878598046DFF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{88B6856F-4A9A-4103-AACD-878598046DFF}.Release|x86.ActiveCfg = Release|Any CPU
+		{71E91CE9-4FB3-4A8F-A4C7-60F77407CF19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71E91CE9-4FB3-4A8F-A4C7-60F77407CF19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71E91CE9-4FB3-4A8F-A4C7-60F77407CF19}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{71E91CE9-4FB3-4A8F-A4C7-60F77407CF19}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{71E91CE9-4FB3-4A8F-A4C7-60F77407CF19}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{71E91CE9-4FB3-4A8F-A4C7-60F77407CF19}.Debug|x86.Build.0 = Debug|Any CPU
+		{71E91CE9-4FB3-4A8F-A4C7-60F77407CF19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71E91CE9-4FB3-4A8F-A4C7-60F77407CF19}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71E91CE9-4FB3-4A8F-A4C7-60F77407CF19}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{71E91CE9-4FB3-4A8F-A4C7-60F77407CF19}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{71E91CE9-4FB3-4A8F-A4C7-60F77407CF19}.Release|x86.ActiveCfg = Release|Any CPU
+		{71E91CE9-4FB3-4A8F-A4C7-60F77407CF19}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
