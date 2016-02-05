@@ -2,6 +2,10 @@
 
 A library for simple client/server networking that allows efficient sending/retrieval of generic byte data, including files.
 
+Install through Nuget:
+
+`$ install-package kilo.networking`
+
 ### Usage
 
 Create a server and listen for messages:
