@@ -9,7 +9,7 @@
     <description>Types for creating client/server TCP applications</description>    
     <copyright>Copyright (C) Steve Hobbs 2016</copyright>
     <dependencies>
-      <dependency id="Kilo" />
+      <dependency id="Kilo" version="1.2.3.36349" />
     </dependencies>
   </metadata>
 </package>
