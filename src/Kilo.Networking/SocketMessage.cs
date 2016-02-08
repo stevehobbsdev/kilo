@@ -10,7 +10,7 @@ namespace Kilo.Networking
     /// </summary>
     public class SocketMessage : ISocketMessage
     {
-        private Stream receiveStream;
+        protected Stream receiveStream;
         private TraceSource trace = new TraceSource("Kilo.Networking.Messaging");
 
         /// <summary>
@@ -26,7 +26,7 @@ namespace Kilo.Networking
         /// <summary>
         /// Gets or sets the request handle.
         /// </summary>
-        public RequestHandle Handle { get; set; }
+        public RequestHandle Handle { get; set; }      
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="SocketMessage"/> is faulted.
@@ -71,11 +71,6 @@ namespace Kilo.Networking
         }
 
         /// <summary>
-        /// Gets a value indicating whether the data stream should be automatically closed once the message is received
-        /// </summary>
-        public virtual bool AutoCloseStream => false;
-
-        /// <summary>
         /// Gets the message data stream.
         /// </summary>
         public virtual Stream GetStream()
@@ -106,6 +101,12 @@ namespace Kilo.Networking
             stream.Position = 0;
 
             return str;
+        }
+
+        public virtual void OnFinishReadingMessage()
+        {
+            receiveStream.Flush();
+            receiveStream.Position = 0;
         }
 
         public virtual void Dispose()

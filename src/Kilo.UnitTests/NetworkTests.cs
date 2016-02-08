@@ -40,7 +40,7 @@ namespace Kilo.UnitTests
                 connectedEvent.Set();
             };
 
-            server.MessageReceived += async (s, a) =>
+            server.MessageReceived += (s, a) =>
             {
                 if (a.Message.MessageTypeId == 10)
                 {
@@ -58,7 +58,7 @@ namespace Kilo.UnitTests
 
                 if (a.Message.MessageTypeId == 12)
                 {                    
-                    await a.Message.SaveAsAsync(sendFilePath);
+                    a.Message.SaveAs(sendFilePath);
                     sendFileEvent.Set();
                 }
             };

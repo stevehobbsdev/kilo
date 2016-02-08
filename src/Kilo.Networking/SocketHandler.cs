@@ -25,7 +25,7 @@ namespace Kilo.Networking
     public class SocketHandler : IDisposable, ISocketWriter
     {
         private const int MessageBufferSize = 16 * 1024;
-        private const int MaxMessageLength = 2 * 1024 * 1024;
+        private const int MaxMessageLength = 100 * 1024;
 
         private readonly TcpClient client;
         private object sendlock = new object();
@@ -109,20 +109,20 @@ namespace Kilo.Networking
 
                     ISocketMessage message = null;
 
-                    var incomingHandle = new RequestHandle(RequestHandle.Parse(handleBuffer));
+                    var messageHandle = new RequestHandle(RequestHandle.Parse(handleBuffer));
 
-                    trace.TraceEvent(TraceEventType.Verbose, 0, $"Request handle: { incomingHandle.Id }");
+                    trace.TraceEvent(TraceEventType.Verbose, 0, $"Request handle: { messageHandle.Id }");
 
                     try
                     {
                         if (length > MaxMessageLength || messageTypeId == (int)MessageOperation.StreamData)
                         {
-                            message = new FileMessage(messageTypeId, length, incomingHandle);
+                            message = new FileMessage(messageTypeId, length, messageHandle);
                             trace.TraceEvent(TraceEventType.Verbose, 0, $"Created file message");
                         }
                         else
                         {
-                            message = new SocketMessage(messageTypeId, length, incomingHandle, faulted);
+                            message = new SocketMessage(messageTypeId, length, messageHandle, faulted);
                             trace.TraceEvent(TraceEventType.Verbose, 0, $"Created socket message");
                         }
 
@@ -156,24 +156,15 @@ namespace Kilo.Networking
 
                         trace.TraceEvent(TraceEventType.Verbose, 0, $"Message read in { readTimer.Elapsed }");
 
-                        if (bytesRemaining > 0)
-                            break;
-
-                        outputStream.Flush();
-                        outputStream.Position = 0;
-
-                        if (message.AutoCloseStream)
-                        {
-                            trace.TraceEvent(TraceEventType.Verbose, 0, $"Closing stream");
-                            message.GetStream().Close();
-                        }
-
+                        trace.TraceEvent(TraceEventType.Verbose, 0, $"Signalling reading complete for { messageHandle?.Id }");
+                        message.OnFinishReadingMessage();
+                                                
                         bool handled = false;
                         if (handler != null)
                         {
                             if (handle != null)
                             {
-                                if (handle.Id == incomingHandle.Id)
+                                if (handle.Id == messageHandle.Id)
                                 {
                                     trace.TraceEvent(TraceEventType.Verbose, 0, "Invoking local message handler");
                                     handler.Invoke(this, new SocketMessageEventArgs(message, this));
@@ -200,7 +191,7 @@ namespace Kilo.Networking
                         if (message.MessageTypeId == (int)MessageOperation.Echo)
                         {
                             trace.TraceEvent(TraceEventType.Information, 0, $"Echo message received, returning the data");
-                            this.Send((int)MessageOperation.EchoReturn, message.MessageLength, message.GetStream(), incomingHandle);
+                            this.Send((int)MessageOperation.EchoReturn, message.MessageLength, message.GetStream(), messageHandle);
                         }
                     }
                     finally

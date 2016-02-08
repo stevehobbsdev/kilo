@@ -8,9 +8,9 @@ namespace Kilo.Networking
         int MessageLength { get; set; }
         int MessageTypeId { get; set; }
         RequestHandle Handle { get; set; }
-        bool AutoCloseStream { get; }
         bool Faulted { get; }
 
         Stream GetStream();
+        void OnFinishReadingMessage();
     }
 }

@@ -6,7 +6,7 @@ namespace Kilo.Networking
 {
     public static class MessageExtensions
     {
-        public static async Task SaveAsAsync(this ISocketMessage message, string filename)
+        public static void SaveAs(this ISocketMessage message, string filename)
         {
             var trace = new TraceSource("Kilo.Networking.Messaging");
 
@@ -20,8 +20,15 @@ namespace Kilo.Networking
 
                 input.Position = 0;
 
-                await input.CopyToAsync(output);
+                byte [] buffer = new byte[64 * 1024];
+                int read = 0;
 
+                do
+                {
+                    read = input.Read(buffer, 0, buffer.Length);
+                    output.Write(buffer, 0, read);
+                } while (read > 0);
+                
                 watch.Stop();
 
                 trace.TraceEvent(TraceEventType.Verbose, 0, $"Done in { watch.Elapsed }");

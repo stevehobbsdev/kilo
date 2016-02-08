@@ -21,11 +21,18 @@ namespace Kilo.Networking
         }
 
         public string Filename { get; private set; }
-        public override bool AutoCloseStream => true;
 
         protected override Stream CreateStream()
         {
             return new FileStream(this.Filename, FileMode.OpenOrCreate);
+        }
+
+        public override void OnFinishReadingMessage()
+        {
+            base.OnFinishReadingMessage();
+
+            this.receiveStream.Close();
+            this.receiveStream = null;
         }
 
         public override string ToString()
