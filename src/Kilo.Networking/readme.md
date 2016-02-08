@@ -16,6 +16,9 @@ var listener = new SocketListener();
 listener.MessageReceived += (s, a) =>
 {
     Console.WriteLine($"Received a message: { a.Message }");
+
+    // optionally send a response
+    a.SocketWriter.Send(0, "My response", a.Message.Handler);
 };            
 
 listener.Listen(4200);
@@ -59,7 +62,7 @@ Send an object and get a response:
 ```
 var obj = new MyObject();
 
-var response = await client.MakeRequest(Constants.MyMessageTypeId, obj);
+var response = await client.MakeRequest<ResponseType>(Constants.MyMessageTypeId, obj);
 
 // response contains the result
 
