@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace Kilo.Networking
 {
@@ -9,6 +11,7 @@ namespace Kilo.Networking
     public class SocketMessage : ISocketMessage
     {
         private Stream receiveStream;
+        private TraceSource trace = new TraceSource("Kilo.Networking.Messaging");
 
         /// <summary>
         /// Gets or sets the message type identifier.

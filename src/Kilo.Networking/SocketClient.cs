@@ -65,19 +65,29 @@ namespace Kilo.Networking
         /// <summary>
         /// Sends a file to the server
         /// </summary>
-        public void SendFile(int operation, string filename)
+        public RequestHandle SendFile(int operation, string filename, RequestHandle handle = null)
         {
-            this.handler.SendFile(operation, filename, null);
+            return this.handler.SendFile(operation, filename, handle);
         }
 
         /// <summary>
         /// Sends the specified length.
         /// </summary>
-        public void Send(int length, Stream stream, RequestHandle handle)
+        public RequestHandle Send(int commandId, Stream stream, int length, RequestHandle handle = null)
         {
-            trace.TraceEvent(TraceEventType.Information, 0, $"Sending content in {stream.GetType()} of length {length}");
+            trace.TraceEvent(TraceEventType.Information, 0, $"Sending content in {stream.GetType()} of length {length} (command: { commandId })");
 
-            this.handler.Send((int)MessageOperation.StreamData, length, stream, handle);
+            return this.handler.Send(commandId, length, stream, handle);
+        }
+
+        /// <summary>
+        /// Sends the specified length.
+        /// </summary>
+        public RequestHandle Send(int commandId, byte[] bytes, RequestHandle handle = null)
+        {
+            trace.TraceEvent(TraceEventType.Information, 0, $"Sending byte content ({ bytes.Length } bytes, command: { commandId })");
+
+            return this.handler.Send(commandId, bytes, handle);
         }
 
         /// <summary>

@@ -271,6 +271,8 @@ namespace Kilo.Networking
 
                 handle = handle ?? new RequestHandle(type, bytes.Length, Guid.NewGuid());
 
+                trace.TraceEvent(TraceEventType.Verbose, 0, $"Preparing to transmit byte data; command: { type }, length: { bytes.Length } bytes, id: { handle.Id }");
+
                 ns.Write(typeBuffer, 0, 4);
                 ns.Write(lengthBuffer, 0, 4);
                 ns.Write(faultedBuffer, 0, faultedBuffer.Length);
@@ -301,6 +303,8 @@ namespace Kilo.Networking
 
                 handle = handle ?? new RequestHandle(type, length, Guid.NewGuid());
 
+                trace.TraceEvent(TraceEventType.Verbose, 0, $"Transmitting stream data; command: { type }, length: { length } bytes, id: { handle.Id }");
+
                 ns.Write(typeBuffer, 0, typeBuffer.Length);
                 ns.Write(lengthBuffer, 0, lengthBuffer.Length);
                 ns.Write(faultedBuffer, 0, faultedBuffer.Length);
@@ -309,10 +313,13 @@ namespace Kilo.Networking
                 var sendBuffer = new byte[Math.Min(length, MessageBufferSize)];
                 var bytesWritten = 0;
                 var bytesRemaining = length;
+                var packetIndex = 1;
 
                 while (bytesRemaining > 0)
                 {
                     var read = stream.Read(sendBuffer, 0, sendBuffer.Length);
+
+                    trace.TraceData(TraceEventType.Verbose, 0, $"\tSending packet { packetIndex++ } ({read} bytes)");
 
                     ns.Write(sendBuffer, 0, read);
                     bytesRemaining -= read;

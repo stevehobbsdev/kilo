@@ -28,24 +28,6 @@ namespace Kilo.Networking
             return new FileStream(this.Filename, FileMode.OpenOrCreate);
         }
 
-        public async Task SaveAsAsync(string filename)
-        {
-            using (var fs = this.CreateStream())
-            using (var output = new FileStream(filename, FileMode.Create))
-            {
-                var watch = new Stopwatch();
-                watch.Start();
-
-                trace.TraceEvent(TraceEventType.Information, 0, $"Copying { this.Filename } to { filename }");
-
-                await fs.CopyToAsync(output);
-
-                watch.Stop();
-
-                trace.TraceEvent(TraceEventType.Verbose, 0, $"Done in { watch.Elapsed }");
-            }
-        }
-
         public override string ToString()
         {
             return $"[FileMessage, { this.Filename }]";

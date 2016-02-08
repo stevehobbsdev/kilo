@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Kilo.Networking;
 using Kilo.UnitTests.Fakes;
+using Kilo.UnitTests.Properties;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Kilo.UnitTests
@@ -19,6 +23,9 @@ namespace Kilo.UnitTests
         private static SocketListener server;
         private static ManualResetEvent connectedEvent = new ManualResetEvent(false);
         private static SocketClient client;
+
+        private static string sendFilePath = @"c:\output.jpg";
+        private static ManualResetEvent sendFileEvent = new ManualResetEvent(false);
 
         [ClassInitialize]
         public static void ClassInitialise(TestContext context)
@@ -33,7 +40,7 @@ namespace Kilo.UnitTests
                 connectedEvent.Set();
             };
 
-            server.MessageReceived += (s, a) =>
+            server.MessageReceived += async (s, a) =>
             {
                 if (a.Message.MessageTypeId == 10)
                 {
@@ -47,6 +54,12 @@ namespace Kilo.UnitTests
                             Response = $"Hello, {message.Message}"
                         }, a.Message.Handle);                        
                     }
+                }
+
+                if (a.Message.MessageTypeId == 12)
+                {                    
+                    await a.Message.SaveAsAsync(sendFilePath);
+                    sendFileEvent.Set();
                 }
             };
 
@@ -91,6 +104,38 @@ namespace Kilo.UnitTests
             response.Should().NotBeNull();
             response.Id.Should().Be(obj.Id);
             response.Response.Should().Be("Hello, This is a message");
+        }
+
+
+        [TestMethod]
+        public void Can_send_file()
+        {
+            var asm = Assembly.GetExecutingAssembly();
+
+            using (var fileStream = new FileStream(@"Resources\IMG_6040.jpg", FileMode.Open))
+            {
+                // Act                
+                client.Send(12, fileStream, (int)fileStream.Length);
+                sendFileEvent.WaitOne();
+
+                // Assert
+                File.Exists(sendFilePath).Should().BeTrue();
+                sendFileEvent.Reset();
+
+                TryDeleteTestFile();
+            }
+        }
+
+        private static void TryDeleteTestFile()
+        {
+            try
+            {
+                if (File.Exists(sendFilePath))
+                    File.Delete(sendFilePath);
+            }
+            catch
+            {
+            }
         }
     }
 }
