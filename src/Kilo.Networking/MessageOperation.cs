@@ -4,6 +4,6 @@
     {
         Echo = 1,
         EchoReturn = 2,
-        StreamData = 10
+        StreamData = 3
     }
 }

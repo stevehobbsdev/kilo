@@ -47,7 +47,9 @@
     <Compile Include="Constants.cs" />
     <Compile Include="FileMessage.cs" />
     <Compile Include="ISocketMessage.cs" />
+    <Compile Include="ISocketWriter.cs" />
     <Compile Include="JsonSocketMessage.cs" />
+    <Compile Include="MessageEventHandler.cs" />
     <Compile Include="MessageOperation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RequestHandle.cs" />

@@ -4,24 +4,6 @@ using System.IO;
 namespace Kilo.Networking
 {
     /// <summary>
-    /// Event arguments for message event handlers
-    /// </summary>
-    public class SocketMessageEventArgs
-    {
-        public SocketMessageEventArgs(ISocketMessage message)
-        {
-            this.Message = message;
-        }
-
-        public ISocketMessage Message { get; private set; }
-    }
-
-    /// <summary>
-    /// A handler for message operations
-    /// </summary>
-    public delegate void MessageEventHandler(object sender, SocketMessageEventArgs args);
-
-    /// <summary>
     /// Represents a message being sent/received across the wire
     /// </summary>
     public class SocketMessage : ISocketMessage

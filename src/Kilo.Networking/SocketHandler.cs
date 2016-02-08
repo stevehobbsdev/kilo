@@ -22,7 +22,7 @@ namespace Kilo.Networking
         }
     }
 
-    public class SocketHandler : IDisposable
+    public class SocketHandler : IDisposable, ISocketWriter
     {
         private const int MessageBufferSize = 16 * 1024;
         private const int MaxMessageLength = 2 * 1024 * 1024;
@@ -176,7 +176,7 @@ namespace Kilo.Networking
                                 if (handle.Id == incomingHandle.Id)
                                 {
                                     trace.TraceEvent(TraceEventType.Verbose, 0, "Invoking local message handler");
-                                    handler.Invoke(this, new SocketMessageEventArgs(message));
+                                    handler.Invoke(this, new SocketMessageEventArgs(message, this));
                                     handled = true;
                                 }
                                 else
@@ -185,7 +185,7 @@ namespace Kilo.Networking
                             else
                             {
                                 trace.TraceEvent(TraceEventType.Verbose, 0, "Invoking local message handler");
-                                handler.Invoke(this, new SocketMessageEventArgs(message));
+                                handler.Invoke(this, new SocketMessageEventArgs(message, this));
                                 handled = true;
                             }
                         }
@@ -193,7 +193,7 @@ namespace Kilo.Networking
                         if (!handled)
                         {
                             trace.TraceEvent(TraceEventType.Verbose, 0, "Invoking general message handler");
-                            this.MessageReceived?.Invoke(this, new SocketMessageEventArgs(message));
+                            this.MessageReceived?.Invoke(this, new SocketMessageEventArgs(message, this));
                         }
 
                         // Built-in echo mechanism
@@ -239,6 +239,18 @@ namespace Kilo.Networking
         public RequestHandle Send(int type, string msg, RequestHandle handle = null, bool faulted = false)
         {
             return this.Send(type, Encoding.UTF8.GetBytes(msg), handle, faulted);
+        }
+
+        /// <summary>
+        /// Sends the specified operation.
+        /// </summary>
+        public RequestHandle Send<T>(int operation, T obj, RequestHandle handle = null, bool faulted = false)
+        {
+            trace.TraceEvent(TraceEventType.Information, 0, $"Sending json object of type { obj.GetType() }");
+
+            var msg = JsonSocketMessage.Create(operation, obj, handle);
+
+            return this.Send(msg);
         }
 
         /// <summary>
@@ -351,6 +363,10 @@ namespace Kilo.Networking
 
         public void Dispose()
         {
+            if (this.client != null)
+            {
+                this.client.Close();                
+            }
         }
     }
 }

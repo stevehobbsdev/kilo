@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Diagnostics;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
@@ -11,6 +13,7 @@ namespace Kilo.Networking
         private bool isRunning;
         private TcpListener listener;
         private TraceSource trace = new TraceSource("Kilo.Networking.SocketListener");
+        ConcurrentBag<SocketHandler> handlers = new ConcurrentBag<SocketHandler>();
 
         public event MessageEventHandler MessageReceived;
 
@@ -56,7 +59,18 @@ namespace Kilo.Networking
         private void OnAcceptClient(IAsyncResult result)
         {
             var listener = (TcpListener)result.AsyncState;
-            var client = listener.EndAcceptTcpClient(result);
+            TcpClient client;
+
+            try
+            {
+                client = listener.EndAcceptTcpClient(result);
+            }
+            catch (ObjectDisposedException)
+            {
+                this.trace.TraceEvent(TraceEventType.Warning, 0, "ObjectDisposedException encountered, listener could be in an exiting state. Not listening for any more clients");
+                this.isRunning = false;
+                return;
+            }
 
             trace.TraceEvent(TraceEventType.Information, 0, $"Accepted client from {client.Client.RemoteEndPoint}");
 
@@ -74,6 +88,8 @@ namespace Kilo.Networking
                     {
                         this.OnMessageReceived(handler, a.Message);                                            
                     };
+
+                    this.handlers.Add(handler);
 
                     handler.Receive(cancelToken: new CancelToken());
 
@@ -100,6 +116,15 @@ namespace Kilo.Networking
                 this.listener.Stop();
             }
 
+            var availableHandlers = this.handlers.ToList();
+
+            foreach (var handler in availableHandlers)
+            {
+                handler.Dispose();
+            }
+
+            this.handlers = null;
+
             this.isRunning = false;
         }
 
@@ -107,7 +132,7 @@ namespace Kilo.Networking
         {
             trace.TraceEvent(TraceEventType.Verbose, 0, $"Received { message.MessageTypeId } ({ message.MessageLength } bytes): {message.GetType()}");
 
-            this.MessageReceived?.Invoke(this, new SocketMessageEventArgs(message));
+            this.MessageReceived?.Invoke(this, new SocketMessageEventArgs(message, handler));
         }
     }
 }

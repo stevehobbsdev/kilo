@@ -80,13 +80,12 @@ namespace Kilo.Networking
             this.handler.Send((int)MessageOperation.StreamData, length, stream, handle);
         }
 
-        public RequestHandle SendObject(int operation, object obj, RequestHandle handle = null)
+        /// <summary>
+        /// Sends an object
+        /// </summary>
+        public RequestHandle SendObject<T>(int operation, T obj, RequestHandle handle = null)
         {
-            trace.TraceEvent(TraceEventType.Information, 0, $"Sending json object of type { obj.GetType() }");
-
-            var msg = JsonSocketMessage.Create(operation, obj, handle);
-
-            return this.handler.Send(msg);
+            return this.handler.Send(operation, obj, handle, false);
         }
 
         /// <summary>

@@ -43,9 +43,7 @@ namespace Kilo.Networking
             if (marker != "obj/json")
                 return false;
 
-            var jsonBuffer = new byte[stream.Length - stream.Position];
-            var read = stream.Read(jsonBuffer, 0, jsonBuffer.Length);
-            var json = Encoding.UTF8.GetString(jsonBuffer, 0, read).Substring(1);
+            var json = binaryReader.ReadString();
 
             obj = JsonConvert.DeserializeObject<T>(json);
 
